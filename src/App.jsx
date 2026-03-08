@@ -1,4 +1,4 @@
-import "./App.css";
+import "./styles/App.css";
 import { useState, useEffect } from "react";
 import { AddProductModal } from "./components/AddProductModal";
 import { ProductDetailModal } from "./components/ProductDetailModal";
@@ -19,6 +19,7 @@ function App() {
   const [query, setQuery] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [duplicateError, setDuplicateError] = useState("")
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
@@ -30,7 +31,10 @@ function App() {
 
   const handleAdd = () => setIsAddOpen(true);
 
-  const closeModal = () => setIsAddOpen(false);
+  const closeModal = () => {
+    setIsAddOpen(false);
+    setDuplicateError("");
+  }
 
   const closeDetailModal = () => {
     setSelectedProduct(null);
@@ -50,17 +54,26 @@ function App() {
           : p,
       ),
     );
-    closeDetailModal();
+    setSelectedProduct((prev) => ({ ...prev, price: Number(newPrice) }));
   };
 
   const takeData = (name, price) => {
     const clean = name.trim();
     if (!clean) return;
+    if (!price || Number(price) <= 0) return;
+
+    const exist = products.some(
+      (p) => p.name.toLowerCase() === clean.toLowerCase()
+    );
+    if (exist) {
+      setDuplicateError("Éste producto ya existe");
+      return;
+    }
 
     const newProduct = {
       id: crypto.randomUUID(),
       name: clean,
-      price: price,
+      price: Number(price),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -76,35 +89,60 @@ function App() {
   });
 
   return (
-    <main>
-      <h1>App Control Precios</h1>
+    <div className="app">
+      <header className="app-header">
+        <h1>Gestión de Precios</h1>
+        <span className="business-name">Delivery 31</span>
+      </header>
 
-      <input
-        type="search"
-        placeholder="Buscar Producto..."
-        value={query}
-        onChange={handleTextChange}
-      />
+      <main className="app-main">
+        <section className="search-section">
+          <div className="search-bar">
+            <input
+              className="input-field"
+              type="search"
+              placeholder="Buscar Producto..."
+              value={query}
+              onChange={handleTextChange}
+            />
+            <button className="btn-add" onClick={handleAdd}>
+              + Agregar producto
+            </button>
+          </div>
 
-      {filteredProducts.map((p) => (
-        <div key={p.id} onClick={() => setSelectedProduct(p)}>
-          {p.name}
-        </div>
-      ))}
+          {filteredProducts.length > 0 && (
+            <ul className="search-results">
+              {filteredProducts.map((p) => (
+                <li
+                  key={p.id}
+                  onClick={() => setSelectedProduct(p)}
+                  className="search-item"
+                >
+                  {p.name}
+                </li>
+              ))}
+            </ul>
+          )}
 
-      <button onClick={handleAdd}>Agregar</button>
+          {query && filteredProducts.length === 0 && (
+            <p className="empty-results">No se encontraron productos</p>
+          )}
+        </section>
+      </main>
+
+      {/* modales */}
 
       {isAddOpen && (
         <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <AddProductModal onClose={closeModal} onAdd={takeData} />
+          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+            <AddProductModal onClose={closeModal} onAdd={takeData} duplicateError={duplicateError}/>
           </div>
         </div>
       )}
 
       {selectedProduct && (
         <div className="modal-overlay" onClick={closeDetailModal}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
             <ProductDetailModal
               onClose={closeDetailModal}
               onEdit={handleEdit}
@@ -114,7 +152,7 @@ function App() {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 }
 

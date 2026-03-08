@@ -1,0 +1,11 @@
+/* variables.css */
+:root {
+  --color-primary: #1a3a6b;
+  --color-accent: #c0392b;
+  --color-bg: #f4f6f9;
+  --color-surface: #ffffff;
+  --color-text: #1a1a2e;
+  --color-text-light: #6b7280;
+  --color-border: #e2e8f0;
+  --font-base: 'Inter', sans-serif;
+}
