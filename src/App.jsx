@@ -1,8 +1,10 @@
 import "./App.css";
 import { useState } from "react";
 import { AddProductModal } from "./components/AddProductModal";
+import { ProductDetailModal } from "./components/ProductDetailModal";
 
 function App() {
+
   const [products, setProducts] = useState([]);
   const [query, setQuery] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -16,19 +18,44 @@ function App() {
 
   const closeModal = () => setIsAddOpen(false);
 
+  const closeDetailModal = () => setSelectedProduct(null);
+
+  const handleDelete = (id) => {
+    setProducts((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  const handleEdit = (newPrice) => {
+    setProducts((prev) => 
+      prev.map((p) =>
+        p.id === selectedProduct.id
+          ? {...p, price: Number(newPrice), updatedAt: new Date()}
+          : p
+      )
+    );
+    closeDetailModal();
+  }
+
   const takeData = (name, price) => {
     const clean = name.trim();
-    if(!clean) return;
-    
+    if (!clean) return;
+
     const newProduct = {
       id: crypto.randomUUID(),
       name: clean,
-      price: price
-    }
+      price: price,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
 
-    setProducts( (prev) => [...prev, newProduct] );
+    setProducts((prev) => [...prev, newProduct]);
     closeModal();
-  }
+  };
+
+  const filteredProducts = products.filter((p) => {
+    if (query === "") return false;
+
+    return p.name.toLowerCase().includes(query.toLowerCase());
+  });
 
   return (
     <main>
@@ -41,18 +68,33 @@ function App() {
         onChange={handleTextChange}
       />
 
+      {filteredProducts.map((p) => (
+        <div 
+          key={p.id}
+          onClick={() =>setSelectedProduct(p)}
+        >{p.name}</div>
+      ))}
+
       <button onClick={handleAdd}>Agregar</button>
 
       {isAddOpen && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <AddProductModal
-            
-              onClose={closeModal}
-              onAdd={takeData}
+            <AddProductModal onClose={closeModal} onAdd={takeData} />
+          </div>
+        </div>
+      )}
+
+      {selectedProduct && (
+        <div className="modal-overlay" onClick={closeDetailModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <ProductDetailModal
+              onClose={closeDetailModal}
+              onEdit = {handleEdit}
+              product={selectedProduct}
+              onDelete={handleDelete}
             />
           </div>
-          
         </div>
       )}
     </main>

@@ -35,5 +35,7 @@ export const AddProductModal = ({ onClose, onAdd }) => {
       <button onClick={() => onAdd(productName, price)}>Confirmar</button>
       <button onClick={onClose}>Cerrar</button>
     </div>
+
+    
   );
 };
