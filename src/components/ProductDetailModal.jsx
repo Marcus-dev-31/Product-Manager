@@ -1,8 +1,10 @@
 import { useState } from "react";
 
 export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
+
   const [isEditing, setIsEditing] = useState(false);
   const [newPrice, setNewPrice] = useState("");
+  const [isDelete, setIsDelete] = useState(false);
 
   const handleCancelEdit = () => {
     setIsEditing(false);
@@ -38,8 +40,19 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
 
       <p>{new Date(product.createdAt).toLocaleDateString()}</p>
       <p>{new Date(product.updatedAt).toLocaleDateString()}</p>
-      <button onClick={onEdit}>Editar</button>
-      <button onClick={onDelete}>Eliminar</button>
+
+      {isDelete ? (
+        <>
+          <p>Estas Seguro?</p>
+          <button onClick={onDelete}>✓</button>
+          <button onClick={() => setIsDelete(false)}>✗</button>
+        </>
+      ) : (
+        <>
+          <button onClick={() => setIsDelete(true)}>Eliminar</button>
+        </>
+      )}
+      
       <button onClick={onClose}>Cerrar</button>
     </div>
   );

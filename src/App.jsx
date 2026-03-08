@@ -1,14 +1,28 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AddProductModal } from "./components/AddProductModal";
 import { ProductDetailModal } from "./components/ProductDetailModal";
 
-function App() {
+const STORAGE_KEY = "products";
 
-  const [products, setProducts] = useState([]);
+function App() {
+  const [products, setProducts] = useState(() => {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    try {
+      const saved = JSON.parse(raw);
+      return Array.isArray(saved) ? saved : [];
+    } catch {
+      return [];
+    }
+  });
   const [query, setQuery] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+  }, [products]);
 
   const handleTextChange = (e) => {
     setQuery(e.target.value);
@@ -18,22 +32,26 @@ function App() {
 
   const closeModal = () => setIsAddOpen(false);
 
-  const closeDetailModal = () => setSelectedProduct(null);
+  const closeDetailModal = () => {
+    setSelectedProduct(null);
+    setQuery("");
+  };
 
   const handleDelete = (id) => {
     setProducts((prev) => prev.filter((p) => p.id !== id));
+    closeDetailModal();
   };
 
   const handleEdit = (newPrice) => {
-    setProducts((prev) => 
+    setProducts((prev) =>
       prev.map((p) =>
         p.id === selectedProduct.id
-          ? {...p, price: Number(newPrice), updatedAt: new Date()}
-          : p
-      )
+          ? { ...p, price: Number(newPrice), updatedAt: new Date() }
+          : p,
+      ),
     );
     closeDetailModal();
-  }
+  };
 
   const takeData = (name, price) => {
     const clean = name.trim();
@@ -69,10 +87,9 @@ function App() {
       />
 
       {filteredProducts.map((p) => (
-        <div 
-          key={p.id}
-          onClick={() =>setSelectedProduct(p)}
-        >{p.name}</div>
+        <div key={p.id} onClick={() => setSelectedProduct(p)}>
+          {p.name}
+        </div>
       ))}
 
       <button onClick={handleAdd}>Agregar</button>
@@ -90,7 +107,7 @@ function App() {
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <ProductDetailModal
               onClose={closeDetailModal}
-              onEdit = {handleEdit}
+              onEdit={handleEdit}
               product={selectedProduct}
               onDelete={handleDelete}
             />
