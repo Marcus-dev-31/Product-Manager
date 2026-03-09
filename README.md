@@ -1,16 +1,56 @@
-# React + Vite
+# Gestión de Precios
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+App web para consultar y gestionar precios de productos. Desarrollada para uso real en un negocio familiar.
 
-Currently, two official plugins are available:
+🔗 [Ver demo en vivo](https://product-manager-puce-three.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Capturas
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+| Mobile | Modal agregar | Búsqueda |
+|--------|--------------|----------| 
+![Mobile](docs/screenshot-mobile.webp) | 
+![Modal](docs/screenshot-modal.webp) | 
+![Búsqueda](docs/screenshot-search.webp) |
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tecnologías
+
+- React 19 + Vite
+- CSS moderno (Custom Properties, Flexbox, Grid, clamp)
+- Mobile first con bottom sheet en móvil
+- localStorage para persistencia
+- PWA instalable en cualquier dispositivo
+
+---
+
+## Funcionalidades
+
+- Búsqueda en tiempo real por nombre
+- Agregar productos con validación de duplicados
+- Editar precio con feedback visual inmediato
+- Eliminar con confirmación
+- Feedback cuando no hay resultados
+- Instalable como app nativa (PWA)
+
+---
+
+## Decisiones técnicas
+
+**Mobile first real:** el modal en móvil usa el patrón bottom sheet, más natural para pantallas táctiles. En tablet y desktop vuelve al modal centrado tradicional.
+
+**localStorage como MVP:** la persistencia es local por dispositivo. La arquitectura está pensada para migrar a una API REST cuando el negocio lo requiera.
+
+**Sin librerías de UI:** todo el diseño está construido desde cero con CSS moderno para mantener control total sobre el resultado visual.
+
+---
+
+## Próximas features
+
+- [ ] Backend con Node.js + Express
+- [ ] Base de datos con Supabase
+- [ ] Autenticación por negocio
+- [ ] Personalización de nombre y colores
+- [ ] Modelo de suscripción mensual
