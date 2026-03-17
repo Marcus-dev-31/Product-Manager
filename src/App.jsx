@@ -6,6 +6,7 @@ import { useProducts } from "./hooks/useProducts";
 import { SearchInput } from "./components/SearchInput";
 import { ProductList } from "./components/ProductList";
 import { RecentProducts } from "./components/RecentProducts";
+import { Toast } from "./components/Toast";
 
 function App() {
   const {
@@ -19,6 +20,7 @@ function App() {
   const [query, setQuery] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [toast, setToast] = useState("");
 
   const handleTextChange = (e) => {
     setQuery(e.target.value);
@@ -28,7 +30,10 @@ function App() {
 
   const handleAddProduct = (name, price) => {
     const succes = addProduct(name, price);
-    if (succes) closeModal();
+    if (succes) {
+      closeModal();
+      showToast("Producto Agregado");
+    } 
   };
 
   const handleEditProduct = (newPrice) => {
@@ -39,6 +44,7 @@ function App() {
   const handleDeleteProduct = (id) => {
     handleDelete(id);
     closeDetailModal();
+    showToast("Producto Eliminado")
   };
 
   const closeModal = () => {
@@ -49,6 +55,13 @@ function App() {
   const closeDetailModal = () => {
     setSelectedProduct(null);
     setQuery("");
+  };
+
+  const showToast = (message) => {
+    setToast(message);
+    setTimeout(() => {
+      setToast("");
+    }, 3000);
   };
 
   const filteredProducts = products.filter((p) => {
@@ -73,18 +86,18 @@ function App() {
           />
           <div className="search-info">
             {!query && (
-              <p className="search-hint">Escribe el nombre de un producto para buscarlo.</p>
+              <p className="search-hint">
+                Escribe el nombre de un producto para buscarlo.
+              </p>
             )}
-            <span className="product-count">Total Productos Agregados: {products.length}</span>
+            <span className="product-count">
+              Total Productos Agregados: {products.length}
+            </span>
           </div>
 
           {products.length >= 5 && (
-            <RecentProducts
-              products={products}
-              onSelect={setSelectedProduct}
-            />
-)}
-
+            <RecentProducts products={products} onSelect={setSelectedProduct} />
+          )}
 
           {filteredProducts.length > 0 && (
             <ProductList
@@ -125,6 +138,8 @@ function App() {
           </div>
         </div>
       )}
+
+      <Toast message={toast} />
     </div>
   );
 }

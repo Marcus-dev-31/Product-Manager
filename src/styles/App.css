@@ -364,6 +364,21 @@ body {
   }
 }
 
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  z-index: 200;
+  animation: fadeIn 0.2s ease;
+}
+
 /* ================================
    TABLET (768px+)
    ================================ */
