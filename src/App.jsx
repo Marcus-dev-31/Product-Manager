@@ -3,6 +3,8 @@ import { useState } from "react";
 import { AddProductModal } from "./components/AddProductModal";
 import { ProductDetailModal } from "./components/ProductDetailModal";
 import { useProducts } from "./hooks/useProducts";
+import { SearchInput } from "./components/SearchInput";
+import { ProductList } from "./components/ProductList";
 
 function App() {
   const {
@@ -34,9 +36,9 @@ function App() {
   };
 
   const handleDeleteProduct = (id) => {
-  handleDelete(id)
-  closeDetailModal()
-}
+    handleDelete(id);
+    closeDetailModal();
+  };
 
   const closeModal = () => {
     setIsAddOpen(false);
@@ -63,31 +65,17 @@ function App() {
 
       <main className="app-main">
         <section className="search-section">
-          <div className="search-bar">
-            <input
-              className="input-field"
-              type="search"
-              placeholder="Buscar Producto..."
-              value={query}
-              onChange={handleTextChange}
-            />
-            <button className="btn-add" onClick={handleAdd}>
-              + Agregar producto
-            </button>
-          </div>
+          <SearchInput
+            value={query}
+            onChange={handleTextChange}
+            onClick={handleAdd}
+          />
 
           {filteredProducts.length > 0 && (
-            <ul className="search-results">
-              {filteredProducts.map((p) => (
-                <li
-                  key={p.id}
-                  onClick={() => setSelectedProduct(p)}
-                  className="search-item"
-                >
-                  {p.name}
-                </li>
-              ))}
-            </ul>
+            <ProductList 
+              products={filteredProducts}
+              onSelect={selectedProduct}
+            />
           )}
 
           {query && filteredProducts.length === 0 && (
