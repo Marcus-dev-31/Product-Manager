@@ -1,29 +1,21 @@
 import "./styles/App.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AddProductModal } from "./components/AddProductModal";
 import { ProductDetailModal } from "./components/ProductDetailModal";
-
-const STORAGE_KEY = "products";
+import { useProducts } from "./hooks/useProducts";
 
 function App() {
-  const [products, setProducts] = useState(() => {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    try {
-      const saved = JSON.parse(raw);
-      return Array.isArray(saved) ? saved : [];
-    } catch {
-      return [];
-    }
-  });
+  const {
+    products,
+    duplicateError,
+    addProduct,
+    handleEdit,
+    handleDelete,
+    clearError,
+  } = useProducts();
   const [query, setQuery] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [duplicateError, setDuplicateError] = useState("")
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-  }, [products]);
 
   const handleTextChange = (e) => {
     setQuery(e.target.value);
@@ -31,55 +23,29 @@ function App() {
 
   const handleAdd = () => setIsAddOpen(true);
 
+  const handleAddProduct = (name, price) => {
+    const succes = addProduct(name, price);
+    if (succes) closeModal();
+  };
+
+  const handleEditProduct = (newPrice) => {
+    handleEdit(selectedProduct.id, newPrice);
+    setSelectedProduct((prev) => ({ ...prev, price: Number(newPrice) }));
+  };
+
+  const handleDeleteProduct = (id) => {
+  handleDelete(id)
+  closeDetailModal()
+}
+
   const closeModal = () => {
     setIsAddOpen(false);
-    setDuplicateError("");
-  }
+    clearError();
+  };
 
   const closeDetailModal = () => {
     setSelectedProduct(null);
     setQuery("");
-  };
-
-  const handleDelete = (id) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
-    closeDetailModal();
-  };
-
-  const handleEdit = (newPrice) => {
-    setProducts((prev) =>
-      prev.map((p) =>
-        p.id === selectedProduct.id
-          ? { ...p, price: Number(newPrice), updatedAt: new Date() }
-          : p,
-      ),
-    );
-    setSelectedProduct((prev) => ({ ...prev, price: Number(newPrice) }));
-  };
-
-  const takeData = (name, price) => {
-    const clean = name.trim();
-    if (!clean) return;
-    if (!price || Number(price) <= 0) return;
-
-    const exist = products.some(
-      (p) => p.name.toLowerCase() === clean.toLowerCase()
-    );
-    if (exist) {
-      setDuplicateError("Éste producto ya existe");
-      return;
-    }
-
-    const newProduct = {
-      id: crypto.randomUUID(),
-      name: clean,
-      price: Number(price),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    setProducts((prev) => [...prev, newProduct]);
-    closeModal();
   };
 
   const filteredProducts = products.filter((p) => {
@@ -135,7 +101,11 @@ function App() {
       {isAddOpen && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-            <AddProductModal onClose={closeModal} onAdd={takeData} duplicateError={duplicateError}/>
+            <AddProductModal
+              onClose={closeModal}
+              onAdd={handleAddProduct}
+              duplicateError={duplicateError}
+            />
           </div>
         </div>
       )}
@@ -145,9 +115,9 @@ function App() {
           <div className="modal-container" onClick={(e) => e.stopPropagation()}>
             <ProductDetailModal
               onClose={closeDetailModal}
-              onEdit={handleEdit}
+              onEdit={handleEditProduct}
               product={selectedProduct}
-              onDelete={handleDelete}
+              onDelete={handleDeleteProduct}
             />
           </div>
         </div>
