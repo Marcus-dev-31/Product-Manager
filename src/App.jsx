@@ -5,6 +5,7 @@ import { ProductDetailModal } from "./components/ProductDetailModal";
 import { useProducts } from "./hooks/useProducts";
 import { SearchInput } from "./components/SearchInput";
 import { ProductList } from "./components/ProductList";
+import { RecentProducts } from "./components/RecentProducts";
 
 function App() {
   const {
@@ -59,7 +60,7 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Gestión de Precios</h1>
+        <h1>Gestor de Precios</h1>
         <span className="business-name">Delivery 31</span>
       </header>
 
@@ -70,9 +71,23 @@ function App() {
             onChange={handleTextChange}
             onClick={handleAdd}
           />
+          <div className="search-info">
+            {!query && (
+              <p className="search-hint">Escribe el nombre de un producto para buscarlo.</p>
+            )}
+            <span className="product-count">Total Productos Agregados: {products.length}</span>
+          </div>
+
+          {products.length >= 5 && (
+            <RecentProducts
+              products={products}
+              onSelect={setSelectedProduct}
+            />
+)}
+
 
           {filteredProducts.length > 0 && (
-            <ProductList 
+            <ProductList
               products={filteredProducts}
               onSelect={setSelectedProduct}
             />

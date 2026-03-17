@@ -76,6 +76,9 @@ body {
   font-size: 1rem;
   color: var(--color-text);
   transition: background 0.15s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .search-item:last-child {
@@ -92,6 +95,48 @@ body {
   padding: 2rem 0;
   font-size: 1rem;
 }
+
+.search-hint {
+  font-size: .8rem;
+  padding-top: 1rem;
+  color: var(--color-text-light);
+  text-align: center;
+}
+
+.search-info {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.product-count {
+  display: none;
+}
+
+.item-price {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.title-products-list {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 700;
+  padding-top: 5rem;
+  padding-bottom: .1rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .product-count {
+    display: block;
+    color: var(--color-text-light);
+    padding-top: 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+
+
 
 /* ================================
    INPUTS
@@ -185,6 +230,16 @@ body {
   flex: 1;
   padding: 0.875rem;
   background: #c0392b;
+  color: white;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.btn-neutral {
+  flex: 1;
+  padding: 0.875rem;
+  background: #6b7280;
   color: white;
   border-radius: 0.75rem;
   font-size: 1rem;

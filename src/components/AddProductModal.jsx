@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "./Button";
 
 export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
   const [productName, setProductName] = useState("");
@@ -28,7 +29,7 @@ export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
           {duplicateError && <p className="error-message">{duplicateError}</p>}
         </div>
 
-        
+
 
         <div className="form-group">
           <label htmlFor="price">Precio</label>
@@ -47,15 +48,8 @@ export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
       </div>
 
       <div className="modal-footer">
-        <button
-          className="btn-confirm"
-          onClick={() => onAdd(productName, price)}
-        >
-          Confirmar
-        </button>
-        <button className="btn-cancel" onClick={onClose}>
-          Cerrar
-        </button>
+        <Button variant="confirm" onClick={() => onAdd(productName, price)}>Confirmar</Button>
+        <Button variant="neutral" onClick={onClose}>Cerrar</Button>
       </div>
     </div>
   );

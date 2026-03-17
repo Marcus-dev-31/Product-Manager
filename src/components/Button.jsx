@@ -1,9 +1,10 @@
 export const Button = ({ variant, onClick, children }) => {
-    
+
   const classes = {
     confirm: "btn-confirm",
     cancel: "btn-cancel",
-    add: "btn-add"
+    add: "btn-add",
+    neutral: "btn-neutral"
   }
 
   return (
