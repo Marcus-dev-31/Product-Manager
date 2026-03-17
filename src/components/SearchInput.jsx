@@ -1,3 +1,5 @@
+import { Button } from "./Button";
+
 export const SearchInput = ({ value, onChange, onClick }) => {
   return (
     <div className="search-bar">
@@ -8,9 +10,7 @@ export const SearchInput = ({ value, onChange, onClick }) => {
         value={value}
         onChange={onChange}
       />
-      <button className="btn-add" onClick={onClick}>
-        + Agregar producto
-      </button>
+      <Button variant="add" onClick={onClick}>+ Agregar Producto</Button>
     </div>
   );
 };

@@ -74,7 +74,7 @@ function App() {
           {filteredProducts.length > 0 && (
             <ProductList 
               products={filteredProducts}
-              onSelect={selectedProduct}
+              onSelect={setSelectedProduct}
             />
           )}
 

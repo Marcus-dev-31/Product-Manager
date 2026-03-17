@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "./Button";
 
 export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
 
@@ -52,20 +53,20 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
     <div className="modal-footer">
       {isEditing ? (
         <>
-          <button className="btn-confirm" onClick={handleConfirmEdit}>Confirmar</button>
-          <button className="btn-cancel" onClick={handleCancelEdit}>Cancelar</button>
+          <Button variant="confirm" onClick={handleConfirmEdit}>Confirmar</Button>
+          <Button variant="cancel" onClick={handleCancelEdit}>Cancelar</Button>
         </>
       ) : isDelete ? (
         <>
           <p>¿Estás seguro?</p>
-          <button className="btn-confirm" onClick={() => onDelete(product.id)}>Sí, eliminar</button>
-          <button className="btn-cancel" onClick={() => setIsDelete(false)}>No</button>
+          <Button variant="confirm" onClick={() => onDelete(product.id)}>Sí, eliminar</Button>
+          <Button variant="cancel" onClick={() => setIsDelete(false)}>No</Button>
         </>
       ) : (
         <>
-          <button className="btn-confirm" onClick={() => setIsEditing(true)}>Editar precio</button>
-          <button className="btn-cancel" onClick={() => setIsDelete(true)}>Eliminar</button>
-          <button className="btn-cancel" onClick={onClose}>Cerrar</button>
+          <Button variant="confirm" onClick={() => setIsEditing(true)}>Editar Precio</Button>
+          <Button variant="cancel" onClick={() => setIsDelete(true)}>Eliminar</Button>
+          <Button variant="cancel" onClick={onClose}>Cerrar</Button>
         </>
       )}
     </div>
