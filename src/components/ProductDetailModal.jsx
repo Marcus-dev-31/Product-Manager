@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button } from "./Button";
 
 export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
-
   const [isEditing, setIsEditing] = useState(false);
   const [newPrice, setNewPrice] = useState("");
   const [isDelete, setIsDelete] = useState(false);
@@ -37,6 +36,9 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
                 onChange={(e) => setNewPrice(e.target.value)}
                 className="input-field"
                 autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleConfirmEdit();
+                }}
               />
             </div>
           ) : (
@@ -45,36 +47,54 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
         </div>
 
         <div className="product-dates">
-          <p className="date-item">Creado: {new Date(product.createdAt).toLocaleDateString()}</p>
-          <p className="date-item">Editado por última vez: {new Date(product.updatedAt).toLocaleDateString()}</p>
+          <p className="date-item">
+            Creado: {new Date(product.createdAt).toLocaleDateString()}
+          </p>
+          <p className="date-item">
+            Editado por última vez:{" "}
+            {new Date(product.updatedAt).toLocaleDateString()}
+          </p>
         </div>
 
         {isDelete && (
-          <p className="delete-warning">¿Estás seguro que querés eliminar este producto?</p>
+          <p className="delete-warning">
+            ¿Estás seguro que querés eliminar este producto?
+          </p>
         )}
-
       </div>
 
       <div className="modal-footer">
         {isEditing ? (
           <>
-            <Button variant="confirm" onClick={handleConfirmEdit}>Confirmar</Button>
-            <Button variant="cancel" onClick={handleCancelEdit}>Cancelar</Button>
+            <Button variant="confirm" onClick={handleConfirmEdit}>
+              Confirmar
+            </Button>
+            <Button variant="cancel" onClick={handleCancelEdit}>
+              Cancelar
+            </Button>
           </>
         ) : isDelete ? (
           <>
-            <Button variant="confirm" onClick={() => onDelete(product.id)}>Sí, eliminar</Button>
-            <Button variant="cancel" onClick={() => setIsDelete(false)}>No</Button>
+            <Button variant="confirm" onClick={() => onDelete(product.id)}>
+              Sí, eliminar
+            </Button>
+            <Button variant="cancel" onClick={() => setIsDelete(false)}>
+              No
+            </Button>
           </>
-        )
-
-          : (
-            <>
-              <Button variant="confirm" onClick={() => setIsEditing(true)}>Editar Precio</Button>
-              <Button variant="cancel" onClick={() => setIsDelete(true)}>Eliminar</Button>
-              <Button variant="neutral" onClick={onClose}>Cerrar</Button>
-            </>
-          )}
+        ) : (
+          <>
+            <Button variant="confirm" onClick={() => setIsEditing(true)}>
+              Editar Precio
+            </Button>
+            <Button variant="cancel" onClick={() => setIsDelete(true)}>
+              Eliminar
+            </Button>
+            <Button variant="neutral" onClick={onClose}>
+              Cerrar
+            </Button>
+          </>
+        )}
       </div>
     </>
   );

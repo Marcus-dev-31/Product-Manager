@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "./Button";
 
 export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
@@ -7,6 +7,8 @@ export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
 
   const handleNameChange = (e) => setProductName(e.target.value);
   const handlePriceChange = (e) => setPrice(e.target.value);
+
+  const priceRef = useRef(null);
 
   return (
     <div className="modal">
@@ -25,11 +27,15 @@ export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
             value={productName}
             onChange={handleNameChange}
             className="input-field"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                if (priceRef.current) priceRef.current.focus();
+              }
+            }}
           />
           {duplicateError && <p className="error-message">{duplicateError}</p>}
         </div>
-
-
 
         <div className="form-group">
           <label htmlFor="price">Precio</label>
@@ -37,19 +43,27 @@ export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
             <span>$</span>
             <input
               id="price"
+              ref={priceRef}
               type="number"
               placeholder="Ingrese el precio"
               value={price}
               onChange={handlePriceChange}
               className="input-field"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") onAdd(productName, price);
+              }}
             />
           </div>
         </div>
       </div>
 
       <div className="modal-footer">
-        <Button variant="confirm" onClick={() => onAdd(productName, price)}>Confirmar</Button>
-        <Button variant="neutral" onClick={onClose}>Cerrar</Button>
+        <Button variant="confirm" onClick={() => onAdd(productName, price)}>
+          Confirmar
+        </Button>
+        <Button variant="neutral" onClick={onClose}>
+          Cerrar
+        </Button>
       </div>
     </div>
   );
