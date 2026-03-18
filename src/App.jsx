@@ -9,6 +9,7 @@ import { ProductList } from "./components/ProductList";
 import { RecentProducts } from "./components/RecentProducts";
 import { Toast } from "./components/Toast";
 import { BottomBar } from "./components/BottomBar";
+import { ConfirmDialog } from "./components/ConfirmDialog";
 
 function App() {
   const {
@@ -24,6 +25,7 @@ function App() {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [toast, setToast] = useState("");
+  const [pendingImportFile, setPendingImportFile] = useState(null);
 
   const handleTextChange = (e) => {
     setQuery(e.target.value);
@@ -60,6 +62,20 @@ function App() {
     a.click();
     URL.revokeObjectURL(url);
   };
+
+  const handleImportRequest = (file) => {
+    setPendingImportFile(file);
+  }
+
+  const handleImportConfirm = () => {
+    importProducts(pendingImportFile)
+    setPendingImportFile(null)
+    showToast("Productos importados")
+  }
+
+  const handleImportCancel = () => {
+    setPendingImportFile(null)
+  }
 
   const closeModal = () => {
     setIsAddOpen(false);
@@ -170,7 +186,15 @@ function App() {
       </AnimatePresence>
 
 
-      <BottomBar onExport={handleExport} onImport={importProducts} />
+      <BottomBar onExport={handleExport} onImport={handleImportRequest} />
+
+      {pendingImportFile && (
+        <ConfirmDialog
+          message="Esto va a reemplazar todos tus productos actuales. ¿Estás seguro?"
+          onConfirm={handleImportConfirm}
+          onCancel={handleImportCancel}
+        />
+      )}
 
       <Toast message={toast} />
     </div>
