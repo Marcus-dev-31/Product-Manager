@@ -30,8 +30,8 @@ function App() {
 
   const handleAdd = () => setIsAddOpen(true);
 
-  const handleAddProduct = (name, price) => {
-    const succes = addProduct(name, price);
+  const handleAddProduct = (name, price, unitPrice) => {
+    const succes = addProduct(name, price, unitPrice);
     if (succes) {
       closeModal();
       showToast("Producto Agregado");

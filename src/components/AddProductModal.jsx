@@ -4,9 +4,11 @@ import { Button } from "./Button";
 export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
+  const [unitPrice, setUnitPrice] = useState("");
 
   const handleNameChange = (e) => setProductName(e.target.value);
   const handlePriceChange = (e) => setPrice(e.target.value);
+  const handleUnitPriceChange = (e) => setUnitPrice(e.target.value);
 
   const priceRef = useRef(null);
 
@@ -55,10 +57,30 @@ export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
             />
           </div>
         </div>
+        <div className="form-group">
+          <label htmlFor="unitPrice">Precio Unitario</label>
+          <div className="input-prefix">
+            <span>$</span>
+            <input
+              id="unitPrice"
+              type="number"
+              placeholder="Ingrese el precio"
+              value={unitPrice}
+              onChange={handleUnitPriceChange}
+              className="input-field"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") onAdd(productName, price, unitPrice);
+              }}
+            />
+          </div>
+        </div>
       </div>
 
       <div className="modal-footer">
-        <Button variant="confirm" onClick={() => onAdd(productName, price)}>
+        <Button
+          variant="confirm"
+          onClick={() => onAdd(productName, price, unitPrice)}
+        >
           Confirmar
         </Button>
         <Button variant="neutral" onClick={onClose}>

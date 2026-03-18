@@ -19,7 +19,7 @@ export const useProducts = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
   }, [products]);
 
-  const addProduct = (name, price) => {
+  const addProduct = (name, price, unitPrice) => {
     const clean = name.trim();
     if (!clean) return false;
     if (!price || Number(price) <= 0) return false;
@@ -36,6 +36,7 @@ export const useProducts = () => {
       id: crypto.randomUUID(),
       name: clean,
       price: Number(price),
+      unitPrice: unitPrice ? Number(unitPrice) : null,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

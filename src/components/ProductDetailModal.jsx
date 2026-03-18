@@ -4,6 +4,7 @@ import { Button } from "./Button";
 export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newPrice, setNewPrice] = useState("");
+  const [newUnitPrice, setNewUnitPrice] = useState("");
   const [isDelete, setIsDelete] = useState(false);
 
   const handleCancelEdit = () => {
@@ -12,8 +13,9 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
   };
 
   const handleConfirmEdit = () => {
-    onEdit(newPrice);
+    onEdit(newPrice, newUnitPrice);
     setNewPrice("");
+    setNewUnitPrice("");
     setIsEditing(false);
   };
 
@@ -45,6 +47,13 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
             <span className="product-price">${product.price}</span>
           )}
         </div>
+
+        {product.unitPrice && (
+          <div className="product-detail-row">
+            <span className="product-name">Precio Unitario</span>
+            <span className="product-price">${product.unitPrice}</span>
+          </div>
+        )}
 
         <div className="product-dates">
           <p className="date-item">
