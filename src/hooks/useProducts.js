@@ -45,11 +45,15 @@ export const useProducts = () => {
     return true;
   };
 
-  const handleEdit = (id, newPrice) => {
+  const handleEdit = (id, newPrice, newUnitPrice) => {
     setProducts((prev) =>
       prev.map((p) =>
         p.id === id
-          ? { ...p, price: Number(newPrice), updatedAt: new Date() }
+          ? { 
+            ...p, 
+            price: Number(newPrice), 
+            unitPrice: newUnitPrice ? Number(newUnitPrice) : p.unitPrice,
+            updatedAt: new Date() }
           : p,
       ),
     );

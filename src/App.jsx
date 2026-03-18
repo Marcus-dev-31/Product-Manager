@@ -38,9 +38,9 @@ function App() {
     }
   };
 
-  const handleEditProduct = (newPrice) => {
-    handleEdit(selectedProduct.id, newPrice);
-    setSelectedProduct((prev) => ({ ...prev, price: Number(newPrice) }));
+  const handleEditProduct = (newPrice, newUnitPrice) => {
+    handleEdit(selectedProduct.id, newPrice, newUnitPrice);
+    setSelectedProduct((prev) => ({ ...prev, price: Number(newPrice), unitPrice: newUnitPrice ? Number(newUnitPrice) : prev.unitPrice }));
   };
 
   const handleDeleteProduct = (id) => {

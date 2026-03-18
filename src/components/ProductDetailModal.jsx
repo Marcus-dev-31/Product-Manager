@@ -28,10 +28,14 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
       <div className="modal-body">
         <div className="product-detail-row">
           <span className="product-name">{product.name}</span>
+          {!isEditing && <span className="product-price">${product.price}</span>}
+        </div>
 
-          {isEditing ? (
+        {isEditing && (
+          <div className="edit-prices">
             <div className="input-prefix">
               <span>$</span>
+
               <input
                 type="number"
                 value={newPrice}
@@ -43,12 +47,28 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
                 }}
               />
             </div>
-          ) : (
-            <span className="product-price">${product.price}</span>
-          )}
-        </div>
 
-        {product.unitPrice && (
+            {product.unitPrice && (
+
+              <div className="input-prefix">
+                <span>$</span>
+                <input
+                  type="number"
+                  value={newUnitPrice}
+                  onChange={(e) => setNewUnitPrice(e.target.value)}
+                  className="input-field"
+                  autoFocus
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleConfirmEdit();
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+
+        {product.unitPrice && !isEditing && (
           <div className="product-detail-row">
             <span className="product-name">Precio Unitario</span>
             <span className="product-price">${product.unitPrice}</span>
