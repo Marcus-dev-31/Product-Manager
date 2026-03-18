@@ -1,4 +1,5 @@
 import "./styles/App.css";
+import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react";
 import { AddProductModal } from "./components/AddProductModal";
 import { ProductDetailModal } from "./components/ProductDetailModal";
@@ -127,30 +128,47 @@ function App() {
 
       {/* modales */}
 
-      {isAddOpen && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-            <AddProductModal
-              onClose={closeModal}
-              onAdd={handleAddProduct}
-              duplicateError={duplicateError}
-            />
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {isAddOpen && (
+          <motion.div
+            className="modal-overlay"
+            onClick={closeModal}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="modal-container"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+            >
+              <AddProductModal
+                onClose={closeModal}
+                onAdd={handleAddProduct}
+                duplicateError={duplicateError}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {selectedProduct && (
-        <div className="modal-overlay" onClick={closeDetailModal}>
-          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-            <ProductDetailModal
-              onClose={closeDetailModal}
-              onEdit={handleEditProduct}
-              product={selectedProduct}
-              onDelete={handleDeleteProduct}
-            />
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {selectedProduct && (
+          <motion.div className="modal-overlay" onClick={closeDetailModal}>
+            <motion.div className="modal-container" onClick={(e) => e.stopPropagation()}>
+              <ProductDetailModal
+                onClose={closeDetailModal}
+                onEdit={handleEditProduct}
+                product={selectedProduct}
+                onDelete={handleDeleteProduct}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
 
       <BottomBar onExport={handleExport} onImport={importProducts} />
 
