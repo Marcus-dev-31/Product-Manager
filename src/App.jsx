@@ -7,6 +7,7 @@ import { SearchInput } from "./components/SearchInput";
 import { ProductList } from "./components/ProductList";
 import { RecentProducts } from "./components/RecentProducts";
 import { Toast } from "./components/Toast";
+import { BottomBar } from "./components/BottomBar";
 
 function App() {
   const {
@@ -16,6 +17,7 @@ function App() {
     handleEdit,
     handleDelete,
     clearError,
+    importProducts
   } = useProducts();
   const [query, setQuery] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -33,7 +35,7 @@ function App() {
     if (succes) {
       closeModal();
       showToast("Producto Agregado");
-    } 
+    }
   };
 
   const handleEditProduct = (newPrice) => {
@@ -44,7 +46,18 @@ function App() {
   const handleDeleteProduct = (id) => {
     handleDelete(id);
     closeDetailModal();
-    showToast("Producto Eliminado")
+    showToast("Producto Eliminado");
+  };
+
+  const handleExport = () => {
+    const data = localStorage.getItem("products");
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "productos.json";
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const closeModal = () => {
@@ -138,6 +151,8 @@ function App() {
           </div>
         </div>
       )}
+
+      <BottomBar onExport={handleExport} onImport={importProducts} />
 
       <Toast message={toast} />
     </div>

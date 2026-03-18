@@ -60,12 +60,28 @@ export const useProducts = () => {
 
   const clearError = () => setDuplicateError("");
 
+  const importProducts = (file) => {
+  const reader = new FileReader()
+  reader.onload = (event) => {
+    try {
+      const data = JSON.parse(event.target.result)
+      if (Array.isArray(data)) {
+        setProducts(data)
+      }
+    } catch {
+      // archivo inválido
+    }
+  }
+  reader.readAsText(file)
+}
+
   return {
     products,
     duplicateError,
     addProduct,
     handleEdit,
     handleDelete,
-    clearError
+    clearError,
+    importProducts
   };
 };
