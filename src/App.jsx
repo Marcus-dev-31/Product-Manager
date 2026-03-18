@@ -125,7 +125,7 @@ function App() {
             </span>
           </div>
 
-          {products.length >= 5 && (
+          {!query && products.length >= 5 && (
             <RecentProducts products={products} onSelect={setSelectedProduct} />
           )}
 
