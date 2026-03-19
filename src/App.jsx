@@ -1,10 +1,10 @@
 import "./styles/App.css";
-import { AnimatePresence, motion } from "framer-motion"
-import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { AddProductModal } from "./components/AddProductModal";
 import { ProductDetailModal } from "./components/ProductDetailModal";
 import { useProducts } from "./hooks/useProducts";
-import { SearchInput } from "./components/SearchInput";
+import { SearchBar } from "./components/SearchBar";
 import { ProductList } from "./components/ProductList";
 import { RecentProducts } from "./components/RecentProducts";
 import { Toast } from "./components/Toast";
@@ -19,7 +19,7 @@ function App() {
     handleEdit,
     handleDelete,
     clearError,
-    importProducts
+    importProducts,
   } = useProducts();
   const [query, setQuery] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -43,7 +43,11 @@ function App() {
 
   const handleEditProduct = (newPrice, newUnitPrice) => {
     handleEdit(selectedProduct.id, newPrice, newUnitPrice);
-    setSelectedProduct((prev) => ({ ...prev, price: Number(newPrice), unitPrice: newUnitPrice ? Number(newUnitPrice) : prev.unitPrice }));
+    setSelectedProduct((prev) => ({
+      ...prev,
+      price: Number(newPrice),
+      unitPrice: newUnitPrice ? Number(newUnitPrice) : prev.unitPrice,
+    }));
   };
 
   const handleDeleteProduct = (id) => {
@@ -53,7 +57,7 @@ function App() {
   };
 
   const handleExport = () => {
-    const data = localStorage.getItem("products");
+    const data = JSON.stringify(products);
     const blob = new Blob([data], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -65,17 +69,17 @@ function App() {
 
   const handleImportRequest = (file) => {
     setPendingImportFile(file);
-  }
+  };
 
   const handleImportConfirm = () => {
-    importProducts(pendingImportFile)
-    setPendingImportFile(null)
-    showToast("Productos importados")
-  }
+    importProducts(pendingImportFile);
+    setPendingImportFile(null);
+    showToast("Productos importados");
+  };
 
   const handleImportCancel = () => {
-    setPendingImportFile(null)
-  }
+    setPendingImportFile(null);
+  };
 
   const closeModal = () => {
     setIsAddOpen(false);
@@ -84,14 +88,18 @@ function App() {
 
   const closeDetailModal = () => {
     setSelectedProduct(null);
-    setQuery("");
   };
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => {
+      setToast("");
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   const showToast = (message) => {
     setToast(message);
-    setTimeout(() => {
-      setToast("");
-    }, 3000);
   };
 
   const filteredProducts = products.filter((p) => {
@@ -103,13 +111,19 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Gestor de Precios</h1>
+        <div>
+          <h1>Gestor de Precios</h1>
+          <span className="product-count">
+            Total Productos Agregados: {products.length}
+          </span>
+        </div>
+
         <span className="business-name">Delivery 31</span>
       </header>
 
       <main className="app-main">
         <section className="search-section">
-          <SearchInput
+          <SearchBar
             value={query}
             onChange={handleTextChange}
             onClick={handleAdd}
@@ -120,9 +134,6 @@ function App() {
                 Escribe el nombre de un producto para buscarlo.
               </p>
             )}
-            <span className="product-count">
-              Total Productos Agregados: {products.length}
-            </span>
           </div>
 
           {!query && products.length >= 5 && (
@@ -173,7 +184,10 @@ function App() {
       <AnimatePresence>
         {selectedProduct && (
           <motion.div className="modal-overlay" onClick={closeDetailModal}>
-            <motion.div className="modal-container" onClick={(e) => e.stopPropagation()}>
+            <motion.div
+              className="modal-container"
+              onClick={(e) => e.stopPropagation()}
+            >
               <ProductDetailModal
                 onClose={closeDetailModal}
                 onEdit={handleEditProduct}
@@ -184,7 +198,6 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
-
 
       <BottomBar onExport={handleExport} onImport={handleImportRequest} />
 

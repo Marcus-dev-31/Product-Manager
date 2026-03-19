@@ -8,7 +8,7 @@ export const RecentProducts = ({products, onSelect}) => {
 
     return (
         <>
-        <h2 className="title-products-list">Últimos Productos Agregados </h2>
+        <h2 className="title-products-list">Últimos Productos Modificados </h2>
         <ul className="search-results">
               {recentProducts.map((p) => (
                 <ProductItem

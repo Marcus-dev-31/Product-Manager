@@ -10,6 +10,7 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
   const handleCancelEdit = () => {
     setIsEditing(false);
     setNewPrice("");
+    setNewUnitPrice("");
   };
 
   const handleConfirmEdit = () => {
@@ -57,7 +58,6 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
                   value={newUnitPrice}
                   onChange={(e) => setNewUnitPrice(e.target.value)}
                   className="input-field"
-                  autoFocus
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleConfirmEdit();
                   }}

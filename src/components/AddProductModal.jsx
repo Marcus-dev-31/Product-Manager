@@ -6,11 +6,8 @@ export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
   const [price, setPrice] = useState("");
   const [unitPrice, setUnitPrice] = useState("");
 
-  const handleNameChange = (e) => setProductName(e.target.value);
-  const handlePriceChange = (e) => setPrice(e.target.value);
-  const handleUnitPriceChange = (e) => setUnitPrice(e.target.value);
-
   const priceRef = useRef(null);
+  const unitPriceRef = useRef(null);
 
   return (
     <div className="modal">
@@ -27,7 +24,7 @@ export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
             autoFocus
             placeholder="Ingrese el nombre..."
             value={productName}
-            onChange={handleNameChange}
+            onChange={(e) => setProductName(e.target.value)}
             className="input-field"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -49,10 +46,13 @@ export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
               type="number"
               placeholder="Ingrese el precio"
               value={price}
-              onChange={handlePriceChange}
+              onChange={(e) => setPrice(e.target.value)}
               className="input-field"
               onKeyDown={(e) => {
-                if (e.key === "Enter") onAdd(productName, price);
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (unitPriceRef.current) unitPriceRef.current.focus();
+                }
               }}
             />
           </div>
@@ -63,10 +63,11 @@ export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
             <span>$</span>
             <input
               id="unitPrice"
+              ref={unitPriceRef}
               type="number"
               placeholder="Ingrese el precio"
               value={unitPrice}
-              onChange={handleUnitPriceChange}
+              onChange={(e) => setUnitPrice(e.target.value)}
               className="input-field"
               onKeyDown={(e) => {
                 if (e.key === "Enter") onAdd(productName, price, unitPrice);

@@ -24,6 +24,7 @@ export const BottomBar = ({ onExport, onImport }) => {
         onChange={(e) => {
             const file = e.target.files[0]
             if (file) onImport(file)
+            e.target.value = "";
         }}
       />
     </div>

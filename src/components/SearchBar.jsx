@@ -1,6 +1,6 @@
 import { Button } from "./Button";
 
-export const SearchInput = ({ value, onChange, onClick }) => {
+export const SearchBar = ({ value, onChange, onClick }) => {
   return (
     <div className="search-bar">
       <input
