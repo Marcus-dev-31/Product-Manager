@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 
 const STORAGE_KEY = "products";
@@ -8,7 +9,13 @@ export const useProducts = () => {
     if (!raw) return [];
     try {
       const saved = JSON.parse(raw);
-      return Array.isArray(saved) ? saved : [];
+      return Array.isArray(saved) 
+      ? saved.map(p => ({
+        ...p,
+        createdAt: new Date(p.createdAt),
+        updatedAt: new Date(p.updatedAt),
+      })) 
+      : [];
     } catch {
       return [];
     }

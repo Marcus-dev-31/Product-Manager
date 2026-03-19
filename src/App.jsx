@@ -114,7 +114,7 @@ function App() {
         <div>
           <h1>Gestor de Precios</h1>
           <span className="product-count">
-            Total Productos Agregados: {products.length}
+            Total Productos: {products.length}
           </span>
         </div>
 
@@ -183,10 +183,19 @@ function App() {
 
       <AnimatePresence>
         {selectedProduct && (
-          <motion.div className="modal-overlay" onClick={closeDetailModal}>
+          <motion.div
+            className="modal-overlay"
+            onClick={closeDetailModal}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
             <motion.div
               className="modal-container"
               onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
             >
               <ProductDetailModal
                 onClose={closeDetailModal}

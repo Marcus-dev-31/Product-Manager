@@ -25,7 +25,7 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
     <>
       <div className="modal-handle" />
       <div className="modal-header">
-        <h2>{product.name}</h2>
+        <h2>{isEditing ? "Editar Precio" : "Info del Producto"}</h2>
         <button className="modal-close" onClick={onClose}><X size={20} /></button>
       </div>
 
