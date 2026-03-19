@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Pencil, Trash2, Calendar, X } from "lucide-react";
 import { Button } from "./Button";
 
 export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
@@ -22,67 +23,68 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
 
   return (
     <>
+      <div className="modal-handle" />
       <div className="modal-header">
-        <h2>Delivery 31</h2>
+        <h2>{product.name}</h2>
+        <button className="modal-close" onClick={onClose}><X size={20} /></button>
       </div>
 
       <div className="modal-body">
-        <div className="product-detail-row">
-          <span className="product-name">{product.name}</span>
-          {!isEditing && <span className="product-price">${product.price}</span>}
-        </div>
+        <div className="product-detail-card">
+          <div className="product-detail-row">
+            <span className="product-name">{product.name}</span>
+            {!isEditing && <span className="product-price">${product.price}</span>}
+          </div>
 
-        {isEditing && (
-          <div className="edit-prices">
-            <div className="input-prefix">
-              <span>$</span>
-
-              <input
-                type="number"
-                value={newPrice}
-                onChange={(e) => setNewPrice(e.target.value)}
-                className="input-field"
-                autoFocus
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleConfirmEdit();
-                }}
-              />
-            </div>
-
-            {product.unitPrice && (
-
+          {isEditing && (
+            <div className="edit-prices">
               <div className="input-prefix">
                 <span>$</span>
                 <input
                   type="number"
-                  value={newUnitPrice}
-                  onChange={(e) => setNewUnitPrice(e.target.value)}
+                  value={newPrice}
+                  onChange={(e) => setNewPrice(e.target.value)}
                   className="input-field"
+                  autoFocus
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleConfirmEdit();
                   }}
                 />
               </div>
-            )}
+
+              {product.unitPrice && (
+                <div className="input-prefix">
+                  <span>$</span>
+                  <input
+                    type="number"
+                    value={newUnitPrice}
+                    onChange={(e) => setNewUnitPrice(e.target.value)}
+                    className="input-field"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleConfirmEdit();
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          {product.unitPrice && !isEditing && (
+            <div className="product-detail-row">
+              <span className="product-name">Precio Unitario</span>
+              <span className="product-price">${product.unitPrice}</span>
+            </div>
+          )}
+
+          <div className="product-dates">
+            <p className="date-item">
+              <Calendar size={13} /> Creado: {new Date(product.createdAt).toLocaleDateString()}
+            </p>
+            <p className="date-item">
+              <Calendar size={13} /> Editado por última vez:{" "}
+              {new Date(product.updatedAt).toLocaleDateString()}
+            </p>
           </div>
-        )}
-
-
-        {product.unitPrice && !isEditing && (
-          <div className="product-detail-row">
-            <span className="product-name">Precio Unitario</span>
-            <span className="product-price">${product.unitPrice}</span>
-          </div>
-        )}
-
-        <div className="product-dates">
-          <p className="date-item">
-            Creado: {new Date(product.createdAt).toLocaleDateString()}
-          </p>
-          <p className="date-item">
-            Editado por última vez:{" "}
-            {new Date(product.updatedAt).toLocaleDateString()}
-          </p>
         </div>
 
         {isDelete && (
@@ -114,13 +116,10 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
         ) : (
           <>
             <Button variant="confirm" onClick={() => setIsEditing(true)}>
-              Editar Precio
+              <Pencil size={16} /> Editar Precio
             </Button>
             <Button variant="cancel" onClick={() => setIsDelete(true)}>
-              Eliminar
-            </Button>
-            <Button variant="neutral" onClick={onClose}>
-              Cerrar
+              <Trash2 size={16} /> Eliminar
             </Button>
           </>
         )}

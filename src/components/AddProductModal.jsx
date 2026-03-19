@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { X } from "lucide-react";
 import { Button } from "./Button";
 
 export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
@@ -11,8 +12,10 @@ export const AddProductModal = ({ onClose, onAdd, duplicateError }) => {
 
   return (
     <div className="modal">
+      <div className="modal-handle" />
       <div className="modal-header">
-        <h2>Delivery 31</h2>
+        <h2>Agregar Producto</h2>
+        <button className="modal-close" onClick={onClose}><X size={20} /></button>
       </div>
 
       <div className="modal-body">

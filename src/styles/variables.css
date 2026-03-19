@@ -1,11 +1,48 @@
-/* variables.css */
+/* ══════════════════════════════════════
+   VARIABLES — Design System
+   ══════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
 :root {
-  --color-primary: #1a3a6b;
-  --color-accent: #c0392b;
-  --color-bg: #f4f6f9;
-  --color-surface: #ffffff;
-  --color-text: #1a1a2e;
-  --color-text-light: #6b7280;
-  --color-border: #e2e8f0;
-  --font-base: 'Inter', sans-serif;
+  /* ── Palette ── */
+  --color-accent: #E8590C;
+  --color-accent-hover: #D14F09;
+  --color-accent-light: rgba(232, 89, 12, 0.08);
+
+  --color-danger: #DC2626;
+  --color-danger-light: rgba(220, 38, 38, 0.08);
+
+  --color-bg: #F5F5F4;
+  --color-surface: #FFFFFF;
+
+  --color-text: #1C1917;
+  --color-text-light: #78716C;
+  --color-text-lighter: #A8A29E;
+
+  --color-border: #E7E5E4;
+  --color-border-hover: #D6D3D1;
+
+  /* ── Typography ── */
+  --font-base: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* ── Radii ── */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 2px rgba(28, 25, 23, 0.04);
+  --shadow-md: 0 2px 8px rgba(28, 25, 23, 0.06), 0 1px 2px rgba(28, 25, 23, 0.04);
+  --shadow-lg: 0 8px 24px rgba(28, 25, 23, 0.08), 0 2px 8px rgba(28, 25, 23, 0.04);
+  --shadow-xl: 0 16px 48px rgba(28, 25, 23, 0.12), 0 4px 12px rgba(28, 25, 23, 0.06);
+
+  /* ── Motion ── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 0.15s;
+  --duration-normal: 0.25s;
+  --duration-slow: 0.4s;
 }
