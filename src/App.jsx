@@ -8,41 +8,37 @@ import { SearchBar } from "./components/SearchBar";
 import { ProductList } from "./components/ProductList";
 import { RecentProducts } from "./components/RecentProducts";
 import { Toast } from "./components/Toast";
-import { BottomBar } from "./components/BottomBar";
-import { ConfirmDialog } from "./components/ConfirmDialog";
 
 function App() {
   const {
     products,
+    loading,
+    error,
     duplicateError,
     addProduct,
     handleEdit,
     handleDelete,
     clearError,
-    importProducts,
   } = useProducts();
+
   const [query, setQuery] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [toast, setToast] = useState("");
-  const [pendingImportFile, setPendingImportFile] = useState(null);
 
-  const handleTextChange = (e) => {
-    setQuery(e.target.value);
-  };
-
+  const handleTextChange = (e) => setQuery(e.target.value);
   const handleAdd = () => setIsAddOpen(true);
 
-  const handleAddProduct = (name, price, unitPrice) => {
-    const succes = addProduct(name, price, unitPrice);
-    if (succes) {
+  const handleAddProduct = async (name, price, unitPrice) => {
+    const success = await addProduct(name, price, unitPrice);
+    if (success) {
       closeModal();
       showToast("Producto Agregado");
     }
   };
 
-  const handleEditProduct = (newPrice, newUnitPrice) => {
-    handleEdit(selectedProduct.id, newPrice, newUnitPrice);
+  const handleEditProduct = async (newPrice, newUnitPrice) => {
+    await handleEdit(selectedProduct.id, newPrice, newUnitPrice);
     setSelectedProduct((prev) => ({
       ...prev,
       price: Number(newPrice),
@@ -50,35 +46,10 @@ function App() {
     }));
   };
 
-  const handleDeleteProduct = (id) => {
-    handleDelete(id);
+  const handleDeleteProduct = async (id) => {
+    await handleDelete(id);
     closeDetailModal();
     showToast("Producto Eliminado");
-  };
-
-  const handleExport = () => {
-    const data = JSON.stringify(products);
-    const blob = new Blob([data], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "productos.json";
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const handleImportRequest = (file) => {
-    setPendingImportFile(file);
-  };
-
-  const handleImportConfirm = () => {
-    importProducts(pendingImportFile);
-    setPendingImportFile(null);
-    showToast("Productos importados");
-  };
-
-  const handleImportCancel = () => {
-    setPendingImportFile(null);
   };
 
   const closeModal = () => {
@@ -86,30 +57,25 @@ function App() {
     clearError();
   };
 
-  const closeDetailModal = () => {
-    setSelectedProduct(null);
-  };
+  const closeDetailModal = () => setSelectedProduct(null);
+
+  const showToast = (message) => setToast(message);
 
   useEffect(() => {
     if (!toast) return;
-    const timer = setTimeout(() => {
-      setToast("");
-    }, 3000);
+    const timer = setTimeout(() => setToast(""), 3000);
     return () => clearTimeout(timer);
   }, [toast]);
 
-  const showToast = (message) => {
-    setToast(message);
-  };
-
   const filteredProducts = products.filter((p) => {
     if (query === "") return false;
-
     return p.name.toLowerCase().includes(query.toLowerCase());
   });
 
   return (
     <div className="app">
+      {loading && <div className="app-loading">Cargando productos...</div>}
+      {error && <div className="app-error">{error}</div>}
       <header className="app-header">
         <div>
           <h1>Gestor de Precios</h1>
@@ -117,7 +83,6 @@ function App() {
             Total Productos: {products.length}
           </span>
         </div>
-
         <span className="business-name">Delivery 31</span>
       </header>
 
@@ -152,8 +117,6 @@ function App() {
           )}
         </section>
       </main>
-
-      {/* modales */}
 
       <AnimatePresence>
         {isAddOpen && (
@@ -207,16 +170,6 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <BottomBar onExport={handleExport} onImport={handleImportRequest} />
-
-      {pendingImportFile && (
-        <ConfirmDialog
-          message="Esto va a reemplazar todos tus productos actuales. ¿Estás seguro?"
-          onConfirm={handleImportConfirm}
-          onCancel={handleImportCancel}
-        />
-      )}
 
       <Toast message={toast} />
     </div>
