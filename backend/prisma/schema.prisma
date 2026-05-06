@@ -6,11 +6,36 @@ datasource db {
   provider = "postgresql"
 }
 
-model Product {
-  id        String   @id @default(uuid())
+model Business {
+  id        String    @id @default(uuid())
   name      String
-  price     Float
-  unitPrice Float?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  users     User[]
+  products  Product[]
+  createdAt DateTime  @default(now())
+}
+
+model User {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  password   String
+  role       Role     @default(EMPLOYEE)
+  business   Business @relation(fields: [businessId], references: [id])
+  businessId String
+  createdAt  DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+model Product {
+  id         String    @id @default(uuid())
+  name       String
+  price      Float
+  unitPrice  Float?
+  business   Business  @relation(fields: [businessId], references: [id])
+  businessId String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
