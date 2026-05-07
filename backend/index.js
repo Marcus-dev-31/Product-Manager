@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import productsRouter from "./src/routes/products.routes.js";
+import authRoutes from './src/routes/auth.routes.js'
 
 const app = express();
 const PORT = 3000;
@@ -14,6 +15,7 @@ app.use(
 app.use(express.json());
 
 app.use("/api/products", productsRouter);
+app.use('/api/auth', authRoutes)
 
 app.get("/", (req, res) => {
   res.json({ message: "API funcionando" });

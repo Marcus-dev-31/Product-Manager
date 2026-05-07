@@ -1,54 +1,84 @@
-import prisma from "../lib/prisma.js";
-import {
-  createProductSchema,
-  updateProductSchema,
-} from "../schemas/products.schema.js";
+import { prisma } from '../lib/prisma.js'
+import { createProductSchema, updateProductSchema } from '../schemas/products.schema.js'
+import { ZodError } from 'zod'
 
-export const getProducts = async (req, res) => {
-  try {
-    const products = await prisma.product.findMany();
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ error: "Error al obtener productos" });
-  }
-};
-
-export const createProduct = async (req, res) => {
-  try {
-    const data = createProductSchema.parse(req.body);
-    const product = await prisma.product.create({ data });
-    res.status(201).json(product);
-  } catch (error) {
-    if (error.name === "ZodError") {
-      return res.status(400).json({ errors: error.issues });
+export async function getProducts(req, res) {
+    try {
+        const products = await prisma.product.findMany({
+            where: { businessId: req.user.businessId },
+            orderBy: { createdAt: 'desc' }
+        })
+        res.json(products)
+    } catch (error) {
+        res.status(500).json({ error: 'Error del servidor' })
     }
-    res.status(500).json({ error: "Error al crear producto" });
-  }
-};
+}
 
-export const updateProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const data = updateProductSchema.parse(req.body);
-    const product = await prisma.product.update({
-      where: { id },
-      data,
-    });
-    res.json(product);
-  } catch (error) {
-    if (error.name === "ZodError") {
-      return res.status(400).json({ errors: error.issues });
+export async function createProduct(req, res) {
+    try {
+        const data = createProductSchema.parse(req.body)
+
+        const product = await prisma.product.create({
+            data: {
+                ...data,
+                businessId: req.user.businessId
+            }
+        })
+        res.status(201).json(product)
+    } catch (error) {
+        if (error instanceof ZodError) {
+            return res.status(400).json({ error: error.issues })
+        }
+        res.status(500).json({ error: 'Error del servidor' })
     }
-    res.status(500).json({ error: "Error al actualizar producto" });
-  }
-};
+}
 
-export const deleteProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-    await prisma.product.delete({ where: { id } });
-    res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: "Error al eliminar producto" });
-  }
-};
+export async function updateProduct(req, res) {
+    try {
+        const data = updateProductSchema.parse(req.body)
+
+        const product = await prisma.product.findFirst({
+            where: {
+                id: req.params.id,
+                businessId: req.user.businessId
+            }
+        })
+
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado' })
+        }
+
+        const updated = await prisma.product.update({
+            where: { id: req.params.id },
+            data
+        })
+        res.json(updated)
+    } catch (error) {
+        if (error instanceof ZodError) {
+            return res.status(400).json({ error: error.issues })
+        }
+        res.status(500).json({ error: 'Error del servidor' })
+    }
+}
+
+export async function deleteProduct(req, res) {
+    try {
+        const product = await prisma.product.findFirst({
+            where: {
+                id: req.params.id,
+                businessId: req.user.businessId
+            }
+        })
+
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado' })
+        }
+
+        await prisma.product.delete({
+            where: { id: req.params.id }
+        })
+        res.status(204).send()
+    } catch (error) {
+        res.status(500).json({ error: 'Error del servidor' })
+    }
+}

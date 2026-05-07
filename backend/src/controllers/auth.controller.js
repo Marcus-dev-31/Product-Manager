@@ -42,6 +42,7 @@ export async function register(req, res) {
         res.status(201).json({ token, businessName: business.name })
 
     } catch (error) {
+        console.error(error)
         if (error.name === 'ZodError') {
             return res.status(400).json({ error: error.issues })
         }
