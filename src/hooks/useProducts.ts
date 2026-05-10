@@ -1,0 +1,88 @@
+import { useState, useEffect } from 'react'
+import * as productService from '../services/productService'
+import { Product } from '../services/productService'
+
+export const useProducts = () => {
+    const [products, setProducts] = useState<Product[]>([])
+    const [loading, setLoading] = useState<boolean>(true)
+    const [error, setError] = useState<string | null>(null)
+    const [duplicateError, setDuplicateError] = useState<string>('')
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const data = await productService.getProducts()
+                setProducts(data)
+            } catch {
+                setError('Error al cargar los productos')
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchProducts()
+    }, [])
+
+    const addProduct = async (name: string, price: string, unitPrice?: string): Promise<boolean> => {
+        const clean = name.trim()
+        if (!clean) return false
+        if (!price || Number(price) <= 0) return false
+
+        const exist = products.some(
+            (p) => p.name.toLowerCase() === clean.toLowerCase()
+        )
+        if (exist) {
+            setDuplicateError('Éste producto ya existe')
+            return false
+        }
+
+        try {
+            const newProduct = await productService.createProduct({
+                name: clean,
+                price: Number(price),
+                unitPrice: unitPrice ? Number(unitPrice) : undefined
+            })
+            setProducts((prev) => [...prev, newProduct])
+            return true
+        } catch {
+            setError('Error al crear el producto')
+            return false
+        }
+    }
+
+    const handleEdit = async (id: string, newPrice: string, newUnitPrice?: string): Promise<void> => {
+        try {
+            const updated = await productService.updateProduct(id, {
+                price: Number(newPrice),
+                unitPrice: newUnitPrice ? Number(newUnitPrice) : undefined
+            })
+            setProducts((prev) =>
+                prev.map((p) => (p.id === id ? updated : p))
+            )
+        } catch {
+            setError('Error al actualizar el producto')
+        }
+    }
+
+    const handleDelete = async (id: string): Promise<void> => {
+        try {
+            await productService.deleteProduct(id)
+            setProducts((prev) => prev.filter((p) => p.id !== id))
+        } catch {
+            setError('Error al eliminar el producto')
+        }
+    }
+
+    const clearError = () => setDuplicateError('')
+
+    return {
+        products,
+        loading,
+        error,
+        duplicateError,
+        addProduct,
+        handleEdit,
+        handleDelete,
+        clearError
+    }
+}

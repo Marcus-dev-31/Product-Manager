@@ -1,6 +1,12 @@
 import { ChevronRight } from "lucide-react";
+import { Product } from "../services/productService";
 
-export const ProductList = ({ products, onSelect }) => {
+interface ProductListProps {
+  products: Product[];
+  onSelect: (product: Product) => void;
+}
+
+export const ProductList = ({ products, onSelect }: ProductListProps) => {
   return (
     <ul className="search-results">
       {products.map((p) => (

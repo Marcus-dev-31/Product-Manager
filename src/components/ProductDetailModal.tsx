@@ -1,12 +1,25 @@
 import { useState } from "react";
 import { Pencil, Trash2, Calendar, X } from "lucide-react";
 import { Button } from "./Button";
+import { Product } from "../services/productService";
 
-export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [newPrice, setNewPrice] = useState("");
-  const [newUnitPrice, setNewUnitPrice] = useState("");
-  const [isDelete, setIsDelete] = useState(false);
+interface ProductDetailModalProps {
+  onClose: () => void;
+  product: Product;
+  onDelete: (id: string) => void;
+  onEdit: (newPrice: string, newUnitPrice: string) => void;
+}
+
+export const ProductDetailModal = ({
+  onClose,
+  product,
+  onDelete,
+  onEdit,
+}: ProductDetailModalProps) => {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [newPrice, setNewPrice] = useState<string>("");
+  const [newUnitPrice, setNewUnitPrice] = useState<string>("");
+  const [isDelete, setIsDelete] = useState<boolean>(false);
 
   const handleCancelEdit = () => {
     setIsEditing(false);
@@ -26,14 +39,18 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
       <div className="modal-handle" />
       <div className="modal-header">
         <h2>{isEditing ? "Editar Precio" : "Info del Producto"}</h2>
-        <button className="modal-close" onClick={onClose}><X size={20} /></button>
+        <button className="modal-close" onClick={onClose}>
+          <X size={20} />
+        </button>
       </div>
 
       <div className="modal-body">
         <div className="product-detail-card">
           <div className="product-detail-row">
             <span className="product-name">{product.name}</span>
-            {!isEditing && <span className="product-price">${product.price}</span>}
+            {!isEditing && (
+              <span className="product-price">${product.price}</span>
+            )}
           </div>
 
           {isEditing && (
@@ -78,7 +95,8 @@ export const ProductDetailModal = ({ onClose, product, onDelete, onEdit }) => {
 
           <div className="product-dates">
             <p className="date-item">
-              <Calendar size={13} /> Creado: {new Date(product.createdAt).toLocaleDateString()}
+              <Calendar size={13} /> Creado:{" "}
+              {new Date(product.createdAt).toLocaleDateString()}
             </p>
             <p className="date-item">
               <Calendar size={13} /> Editado por última vez:{" "}

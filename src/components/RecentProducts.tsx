@@ -1,8 +1,17 @@
 import { Package, ChevronRight } from "lucide-react";
+import { Product } from "../services/productService";
 
-export const RecentProducts = ({ products, onSelect }) => {
+interface RecentProductsProps {
+  products: Product[];
+  onSelect: (product: Product) => void;
+}
+
+export const RecentProducts = ({ products, onSelect }: RecentProductsProps) => {
   const recentProducts = [...products]
-    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+    .sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+    )
     .slice(0, 5);
 
   return (
