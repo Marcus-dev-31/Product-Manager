@@ -1,31 +1,27 @@
-import { Search, Plus } from "lucide-react";
-import { Button } from "./Button";
-import { ChangeEvent } from "react";
+import { Search, X } from 'lucide-react'
+import { ChangeEvent } from 'react'
 
 interface SearchBarProps {
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onClick: () => void;
+    value: string
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void
+    onClear: () => void
 }
 
-export const SearchBar = ({ value, onChange, onClick }: SearchBarProps) => {
-  return (
-    <div className="search-bar">
-      <div className="search-input-wrap">
-        <span className="search-icon">
-          <Search size={18} />
-        </span>
-        <input
-          className="input-field"
-          type="search"
-          placeholder="Buscar Producto..."
-          value={value}
-          onChange={onChange}
-        />
-      </div>
-      <Button variant="add" onClick={onClick}>
-        <Plus size={18} /> Agregar Producto
-      </Button>
-    </div>
-  );
-};
+export const SearchBar = ({ value, onChange, onClear }: SearchBarProps) => {
+    return (
+        <div className="search-bar">
+            <span className="search-icon"><Search size={18} /></span>
+            <input
+                type="search"
+                placeholder="Buscar producto..."
+                value={value}
+                onChange={onChange}
+            />
+            {value && (
+                <button className="search-clear-btn" onClick={onClear}>
+                    <X size={14} />
+                </button>
+            )}
+        </div>
+    )
+}

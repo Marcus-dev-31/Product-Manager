@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Pencil, Trash2, Calendar, X } from "lucide-react";
+import { Pencil, Trash2, Calendar, Clock, X } from "lucide-react";
 import { Button } from "./Button";
 import { Product } from "../services/productService";
+import { relativeDate } from "../utils/date";
+import { formatARS } from "../utils/format";
 
 interface ProductDetailModalProps {
   onClose: () => void;
@@ -36,87 +38,99 @@ export const ProductDetailModal = ({
 
   return (
     <>
-      <div className="modal-handle" />
-      <div className="modal-header">
-        <h2>{isEditing ? "Editar Precio" : "Info del Producto"}</h2>
-        <button className="modal-close" onClick={onClose}>
-          <X size={20} />
-        </button>
+      
+
+      <div className="detail-hero">
+        <div className="modal-handle" />
+        <div className="detail-blob" aria-hidden />
+        <div className="detail-hero-row">
+          <div>
+            <span className="detail-hero-eyebrow">
+              {isEditing ? "Editando" : "Producto"}
+            </span>
+            <h2>{product.name}</h2>
+          </div>
+          <button className="detail-hero-close" onClick={onClose}>
+            <X size={16} />
+          </button>
+        </div>
       </div>
 
-      <div className="modal-body">
-        <div className="product-detail-card">
-          <div className="product-detail-row">
-            <span className="product-name">{product.name}</span>
-            {!isEditing && (
-              <span className="product-price">${product.price}</span>
-            )}
-          </div>
+      <div className="detail-body">
+        {!isEditing ? (
+          <>
+            <div className="detail-price-row">
+              <span className="detail-price-label">Precio</span>
+              <span className="detail-price-value">
+                {formatARS(product.price)}
+              </span>
+            </div>
 
-          {isEditing && (
-            <div className="edit-prices">
+            {product.unitPrice && (
+              <div className="detail-unit-row">
+                <span className="detail-unit-label">Precio Unitario</span>
+                <span className="detail-unit-value">
+                  {formatARS(product.unitPrice)}
+                </span>
+              </div>
+            )}
+
+            <div className="detail-dates">
+              <span className="date-item">
+                <Calendar size={13} /> creado {relativeDate(product.createdAt)}
+              </span>
+              <span className="date-item">
+                <Clock size={13} /> editado {relativeDate(product.updatedAt)}
+              </span>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="form-group">
+              <label>Precio</label>
               <div className="input-prefix">
                 <span>$</span>
                 <input
                   type="number"
                   value={newPrice}
                   onChange={(e) => setNewPrice(e.target.value)}
-                  className="input-field"
                   autoFocus
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleConfirmEdit();
                   }}
                 />
               </div>
+            </div>
 
-              {product.unitPrice && (
+            {product.unitPrice && (
+              <div className="form-group">
+                <label>Precio Unitario</label>
                 <div className="input-prefix">
                   <span>$</span>
                   <input
                     type="number"
                     value={newUnitPrice}
                     onChange={(e) => setNewUnitPrice(e.target.value)}
-                    className="input-field"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") handleConfirmEdit();
                     }}
                   />
                 </div>
-              )}
-            </div>
-          )}
-
-          {product.unitPrice && !isEditing && (
-            <div className="product-detail-row">
-              <span className="product-name">Precio Unitario</span>
-              <span className="product-price">${product.unitPrice}</span>
-            </div>
-          )}
-
-          <div className="product-dates">
-            <p className="date-item">
-              <Calendar size={13} /> Creado:{" "}
-              {new Date(product.createdAt).toLocaleDateString()}
-            </p>
-            <p className="date-item">
-              <Calendar size={13} /> Editado por última vez:{" "}
-              {new Date(product.updatedAt).toLocaleDateString()}
-            </p>
-          </div>
-        </div>
-
-        {isDelete && (
-          <p className="delete-warning">
-            ¿Estás seguro que querés eliminar este producto?
-          </p>
+              </div>
+            )}
+          </>
         )}
       </div>
 
-      <div className="modal-footer">
+      {isDelete && (
+        <div className="delete-warning-box">¿Eliminar este producto?</div>
+      )}
+
+      <div className="detail-footer">
         {isEditing ? (
           <>
             <Button variant="confirm" onClick={handleConfirmEdit}>
-              Confirmar
+              <Pencil size={15} /> Guardar
             </Button>
             <Button variant="cancel" onClick={handleCancelEdit}>
               Cancelar
@@ -133,11 +147,11 @@ export const ProductDetailModal = ({
           </>
         ) : (
           <>
-            <Button variant="confirm" onClick={() => setIsEditing(true)}>
-              <Pencil size={16} /> Editar Precio
-            </Button>
             <Button variant="cancel" onClick={() => setIsDelete(true)}>
-              <Trash2 size={16} /> Eliminar
+              <Trash2 size={15} /> Eliminar
+            </Button>
+            <Button variant="confirm" onClick={() => setIsEditing(true)}>
+              <Pencil size={15} /> Editar precio
             </Button>
           </>
         )}

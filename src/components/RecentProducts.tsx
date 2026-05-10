@@ -1,5 +1,6 @@
-import { Package, ChevronRight } from "lucide-react";
 import { Product } from "../services/productService";
+import { relativeDate } from "../utils/date";
+import { formatARS } from "../utils/format";
 
 interface RecentProductsProps {
   products: Product[];
@@ -16,28 +17,25 @@ export const RecentProducts = ({ products, onSelect }: RecentProductsProps) => {
 
   return (
     <>
-      <h2 className="title-products-list">
-        <span className="title-icon">
-          <Package size={20} />
-        </span>{" "}
-        Últimos Productos
-      </h2>
-      <ul className="search-results">
-        {recentProducts.map((p) => (
-          <li key={p.id} className="product-row" onClick={() => onSelect(p)}>
-            <div className="product-info">
-              <span className="product-name">{p.name}</span>
-              <span className="product-date">
-                Editado: {new Date(p.updatedAt).toLocaleDateString()}
-              </span>
-            </div>
-            <div className="product-price-wrap">
-              <span className="item-price">${p.price}</span>
-              <ChevronRight size={16} />
-            </div>
-          </li>
+      <div className="section-label">
+        <span className="section-label-title">Editados recién</span>
+        <span className="section-label-count">{recentProducts.length}</span>
+      </div>
+      <div className="recent-row">
+        {recentProducts.map((p, index) => (
+          <button
+            key={p.id}
+            className={`recent-chip ${index === 0 ? "is-newest" : ""}`}
+            onClick={() => onSelect(p)}
+          >
+            <span className="recent-chip-time">
+              {relativeDate(p.updatedAt)}
+            </span>
+            <span className="recent-chip-name">{p.name}</span>
+            <span className="recent-chip-price">{formatARS(p.price)}</span>
+          </button>
         ))}
-      </ul>
+      </div>
     </>
   );
 };
