@@ -12,7 +12,7 @@ import { BottomBar } from "./components/BottomBar";
 import { Product } from "./services/productService";
 import { TrendingUp } from "lucide-react";
 import { formatARS } from "./utils/format";
-import { relativeDate } from "./utils/date";
+
 
 function App() {
   const {
