@@ -11,8 +11,8 @@ import { Toast } from "./components/Toast";
 import { BottomBar } from "./components/BottomBar";
 import { Product } from "./services/productService";
 import { TrendingUp } from "lucide-react";
-import { LogOut } from "lucide-react";
 import { formatARS } from "./utils/format";
+import { HamburgerMenu } from "./components/HamburgerMenu";
 
 function App() {
   const {
@@ -73,12 +73,6 @@ function App() {
     showToast("Producto eliminado");
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("businessName");
-    window.location.href = "/login";
-  };
-
   const closeModal = () => {
     setIsAddOpen(false);
     clearError();
@@ -119,9 +113,7 @@ function App() {
       <span className="hero-counter-num">{products.length}</span>
       <span className="hero-counter-label">Items</span>
     </div>
-    <button className="hero-logout" onClick={handleLogout}>
-      <LogOut size={18} />
-    </button>
+    <HamburgerMenu />
   </div>
 </div>
         {lastEdit && (

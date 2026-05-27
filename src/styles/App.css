@@ -977,3 +977,146 @@ body {
         cursor: grabbing;
     }
 }
+
+/* ── Settings ── */
+.settings-page {
+  padding: 1rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.settings-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.settings-back {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  color: var(--color-text);
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-soft);
+}
+
+.settings-input {
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.settings-input:focus {
+  border-color: var(--color-accent);
+}
+
+.settings-save {
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.settings-save:disabled {
+  opacity: 0.6;
+}
+
+.settings-error {
+  font-size: 13px;
+  color: #e53e3e;
+}
+
+.settings-success {
+  font-size: 13px;
+  color: #38a169;
+}
+
+/* ── Hamburger Menu ── */
+.hamburger-btn {
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    padding: 8px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+}
+
+.hamburger-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--color-bg);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+}
+
+.hamburger-close {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    padding: 8px;
+}
+
+.hamburger-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 2rem;
+}
+
+.hamburger-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border: none;
+    background: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text);
+    cursor: pointer;
+    text-align: left;
+}
+
+.hamburger-item:hover {
+    background: var(--color-surface);
+}
+
+.hamburger-item--danger {
+    color: #e53e3e;
+}
