@@ -3,6 +3,7 @@ import express from 'express'
 import cors from 'cors'
 import productsRouter from './routes/products.routes.js'
 import authRoutes from './routes/auth.routes.js'
+import { businessRouter } from './routes/business.routes.js'
 
 const app = express()
 const PORT = 3000
@@ -15,6 +16,7 @@ app.use(express.json())
 
 app.use('/api/products', productsRouter)
 app.use('/api/auth', authRoutes)
+app.use('/api/business', businessRouter)
 
 app.get('/', (req, res) => {
     res.json({ message: 'API funcionando' })

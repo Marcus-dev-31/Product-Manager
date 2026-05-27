@@ -11,8 +11,8 @@ import { Toast } from "./components/Toast";
 import { BottomBar } from "./components/BottomBar";
 import { Product } from "./services/productService";
 import { TrendingUp } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { formatARS } from "./utils/format";
-
 
 function App() {
   const {
@@ -73,6 +73,12 @@ function App() {
     showToast("Producto eliminado");
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("businessName");
+    window.location.href = "/login";
+  };
+
   const closeModal = () => {
     setIsAddOpen(false);
     clearError();
@@ -100,15 +106,24 @@ function App() {
       <header className="hero-card">
         <div className="hero-blob" aria-hidden />
         <div className="hero-row">
-          <div>
-            <span className="hero-eyebrow">Delivery 31</span>
-            <h1>Gestor de Precios</h1>
-          </div>
-          <div className="hero-counter">
-            <span className="hero-counter-num">{products.length}</span>
-            <span className="hero-counter-label">Items</span>
-          </div>
-        </div>
+  <div>
+    <div className="hero-eyebrow-row">
+      <span className="hero-eyebrow">
+        {localStorage.getItem("businessName") ?? "Mi Negocio"}
+      </span>
+    </div>
+    <h1>Precify</h1>
+  </div>
+  <div className="hero-actions">
+    <div className="hero-counter">
+      <span className="hero-counter-num">{products.length}</span>
+      <span className="hero-counter-label">Items</span>
+    </div>
+    <button className="hero-logout" onClick={handleLogout}>
+      <LogOut size={18} />
+    </button>
+  </div>
+</div>
         {lastEdit && (
           <div className="hero-trend">
             <TrendingUp size={13} />

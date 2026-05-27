@@ -47,7 +47,7 @@ body {
 .hero-row {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   position: relative;
 }
 .hero-eyebrow {
@@ -57,7 +57,27 @@ body {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   opacity: 0.85;
+  margin-bottom: 0px;
+}
+
+.hero-eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 4px;
+}
+
+.hero-logout {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  padding: 8px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
 }
 .hero-card h1 {
   font-size: 1.375rem;
@@ -116,6 +136,12 @@ body {
   font-size: 11px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* ── Search sticky ── */
