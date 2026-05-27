@@ -93,6 +93,11 @@ body {
   padding: 6px 10px;
   text-align: center;
   backdrop-filter: blur(8px);
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .hero-counter-num {
   display: block;
@@ -969,13 +974,13 @@ body {
 }
 
 @media (hover: hover) {
-    .recent-row {
-        overflow-x: auto;
-        cursor: grab;
-    }
-    .recent-row:active {
-        cursor: grabbing;
-    }
+  .recent-row {
+    overflow-x: auto;
+    cursor: grab;
+  }
+  .recent-row:active {
+    cursor: grabbing;
+  }
 }
 
 /* ── Settings ── */
@@ -1060,63 +1065,65 @@ body {
 
 /* ── Hamburger Menu ── */
 .hamburger-btn {
-    background: rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 12px;
-    padding: 8px;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  padding: 8px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  min-height: 44px;
+  min-width: 44px;
 }
 
 .hamburger-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--color-bg);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem 1rem;
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
 }
 
 .hamburger-close {
-    align-self: flex-end;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--color-text);
-    padding: 8px;
+  align-self: flex-end;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+  padding: 8px;
 }
 
 .hamburger-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 2rem;
 }
 
 .hamburger-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px;
-    border: none;
-    background: none;
-    border-radius: var(--radius-md);
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--color-text);
-    cursor: pointer;
-    text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
 }
 
 .hamburger-item:hover {
-    background: var(--color-surface);
+  background: var(--color-surface);
 }
 
 .hamburger-item--danger {
-    color: #e53e3e;
+  color: #e53e3e;
 }
