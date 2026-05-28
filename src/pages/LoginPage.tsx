@@ -20,11 +20,14 @@ export const LoginPage = () => {
     setError("");
 
     try {
-      const res = await fetch("https://product-manager-production-e899.up.railway.app", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await fetch(
+        "https://product-manager-production-e899.up.railway.app/api/auth/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        },
+      );
 
       const data = await res.json();
 
