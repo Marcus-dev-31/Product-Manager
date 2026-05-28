@@ -1,4 +1,4 @@
-const API_URL = 'https://product-manager-production-e899.up.railway.app'
+const API_URL = 'https://product-manager-production-e899.up.railway.app/api/products'
 
 export interface Product {
     id: string
