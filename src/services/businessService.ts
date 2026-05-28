@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api/business'
+const API_URL = 'https://product-manager-production-e899.up.railway.app'
 
 function getAuthHeaders(): HeadersInit {
     const token = localStorage.getItem('token')
