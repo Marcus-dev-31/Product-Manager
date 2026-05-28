@@ -20,7 +20,7 @@ export const LoginPage = () => {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:3000/api/auth/login", {
+      const res = await fetch("https://product-manager-production-e899.up.railway.app", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
