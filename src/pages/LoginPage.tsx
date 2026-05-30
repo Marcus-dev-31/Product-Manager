@@ -51,9 +51,9 @@ export function LoginPage() {
         <span className="auth-logo-name">Precify</span>
       </div>
 
-      <h1 className="auth-title">Unirse a un negocio</h1>
+      <h1 className="auth-title">Bienvenido de vuelta</h1>
       <p className="auth-subtitle">
-        Ingresá el código que te compartió el admin
+        Ingresá tus datos para continuar
       </p>
 
       <div className="auth-form">
