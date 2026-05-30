@@ -21,6 +21,42 @@ export async function register(req: AuthRequest, res: Response): Promise<void> {
 
         const hashedPassword = await bcrypt.hash(data.password, 10)
 
+        // Unirse a un negocio existente con inviteCode
+        if (data.inviteCode) {
+            const business = await prisma.business.findUnique({
+                where: { inviteCode: data.inviteCode }
+            })
+
+            if (!business) {
+                res.status(400).json({ error: 'Código de invitación inválido' })
+                return
+            }
+
+            const user = await prisma.user.create({
+                data: {
+                    email: data.email,
+                    password: hashedPassword,
+                    role: 'EDITOR',
+                    businessId: business.id
+                }
+            })
+
+            const token = jwt.sign(
+                { userId: user.id, businessId: business.id, role: user.role },
+                process.env.JWT_SECRET as string,
+                { expiresIn: '7d' }
+            )
+
+            res.status(201).json({ token, businessName: business.name })
+            return
+        }
+
+        //Crear negocio nuevo
+        if (!data.businessName) {
+            res.status(400).json({ error: 'El nombre del negocio es requerido' })
+            return
+        }
+
         const business = await prisma.business.create({
             data: {
                 name: data.businessName,

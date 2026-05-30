@@ -7,18 +7,19 @@ datasource db {
 }
 
 model Business {
-  id        String    @id @default(uuid())
-  name      String
-  users     User[]
-  products  Product[]
-  createdAt DateTime  @default(now())
+  id         String    @id @default(uuid())
+  name       String
+  inviteCode String    @unique @default(uuid())
+  users      User[]
+  products   Product[]
+  createdAt  DateTime  @default(now())
 }
 
 model User {
   id         String   @id @default(uuid())
   email      String   @unique
   password   String
-  role       Role     @default(EMPLOYEE)
+  role       Role     @default(EDITOR)
   business   Business @relation(fields: [businessId], references: [id])
   businessId String
   createdAt  DateTime @default(now())
@@ -26,16 +27,17 @@ model User {
 
 enum Role {
   ADMIN
-  EMPLOYEE
+  EDITOR
+  VIEWER
 }
 
 model Product {
-  id         String    @id @default(uuid())
+  id         String   @id @default(uuid())
   name       String
   price      Float
   unitPrice  Float?
-  business   Business  @relation(fields: [businessId], references: [id])
+  business   Business @relation(fields: [businessId], references: [id])
   businessId String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

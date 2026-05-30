@@ -7,6 +7,7 @@ import App from "./App";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { TeamPage } from "./pages/TeamPage.js";
 
 const isAuthenticated = (): boolean => {
   return !!localStorage.getItem("token");
@@ -59,6 +60,14 @@ createRoot(document.getElementById("root")!).render(
           element={
             <ProtectedRoute>
               <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/team"
+          element={
+            <ProtectedRoute>
+              <TeamPage />
             </ProtectedRoute>
           }
         />

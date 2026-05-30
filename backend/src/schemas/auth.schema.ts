@@ -1,9 +1,10 @@
 import { z } from 'zod'
 
 export const registerSchema = z.object({
-    businessName: z.string().min(2),
+    businessName: z.string().min(2).optional(),
     email: z.email(),
-    password: z.string().min(6)
+    password: z.string().min(6),
+    inviteCode: z.string().optional()
 })
 
 export const loginSchema = z.object({
