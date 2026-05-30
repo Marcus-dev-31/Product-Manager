@@ -23,11 +23,6 @@ export function HamburgerMenu() {
     navigate("/team");
   };
 
-  <button className="hamburger-item" onClick={handleTeam}>
-    <Users size={20} />
-    <span>Equipo</span>
-  </button>;
-
   return (
     <>
       <button className="hamburger-btn" onClick={() => setOpen(true)}>
@@ -48,6 +43,10 @@ export function HamburgerMenu() {
             </button>
 
             <nav className="hamburger-nav">
+              <button className="hamburger-item" onClick={handleTeam}>
+                <Users size={20} />
+                <span>Equipo</span>
+              </button>
               <button className="hamburger-item" onClick={handleSettings}>
                 <Settings size={20} />
                 <span>Configuración</span>

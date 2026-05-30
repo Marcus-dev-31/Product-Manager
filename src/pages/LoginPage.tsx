@@ -1,41 +1,37 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, ArrowRight, Tag } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Tag, Hash } from "lucide-react";
 
-export const LoginPage = () => {
+export function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [inviteCode, setInviteCode] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (!email || !password) {
+    if (!email || !password || !inviteCode) {
       setError("Completá todos los campos");
       return;
     }
-
     setLoading(true);
     setError("");
-
     try {
       const res = await fetch(
-        "https://product-manager-production-e899.up.railway.app/api/auth/login",
+        "https://product-manager-production-e899.up.railway.app/api/auth/register",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, password, inviteCode }),
         },
       );
-
       const data = await res.json();
-
       if (!res.ok) {
-        setError(data.error || "Error al iniciar sesión");
+        setError(data.error || "Error al unirse al negocio");
         return;
       }
-
       localStorage.setItem("token", data.token);
       localStorage.setItem("businessName", data.businessName);
       navigate("/");
@@ -55,11 +51,27 @@ export const LoginPage = () => {
         <span className="auth-logo-name">Precify</span>
       </div>
 
-      <h1 className="auth-title">Bienvenido de vuelta</h1>
-      <p className="auth-subtitle">Ingresá tus datos para continuar</p>
+      <h1 className="auth-title">Unirse a un negocio</h1>
+      <p className="auth-subtitle">
+        Ingresá el código que te compartió el admin
+      </p>
 
       <div className="auth-form">
         {error && <div className="auth-error">{error}</div>}
+
+        <div className="form-group">
+          <label>Código de invitación</label>
+          <div className="auth-input-wrap">
+            <Hash size={16} className="auth-input-icon" />
+            <input
+              className="input-field"
+              type="text"
+              placeholder="ej. 5b07398e-333e-4512..."
+              value={inviteCode}
+              onChange={(e) => setInviteCode(e.target.value)}
+            />
+          </div>
+        </div>
 
         <div className="form-group">
           <label>Email</label>
@@ -68,7 +80,7 @@ export const LoginPage = () => {
             <input
               className="input-field"
               type="email"
-              placeholder="tu@negocio.com"
+              placeholder="tu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={(e) => {
@@ -107,16 +119,19 @@ export const LoginPage = () => {
           disabled={loading}
         >
           <ArrowRight size={18} />
-          {loading ? "Entrando..." : "Entrar"}
+          {loading ? "Uniéndose..." : "Unirse al negocio"}
         </button>
       </div>
 
       <div className="auth-footer">
         <p>
-          ¿No tenés cuenta? <Link to="/register">Registrate</Link>
+          ¿Querés crear tu propio negocio?{" "}
+          <Link to="/register">Registrate</Link>
         </p>
-        <p style={{ marginTop: 8 }}>¿Olvidaste tu contraseña?</p>
+        <p style={{ marginTop: 8 }}>
+          ¿Ya tenés cuenta? <Link to="/login">Iniciá sesión</Link>
+        </p>
       </div>
     </div>
   );
-};
+}
