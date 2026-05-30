@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, ArrowRight, Tag, Hash } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Tag } from "lucide-react";
 
-export function LoginPage() {
+export const LoginPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [inviteCode, setInviteCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (!email || !password || !inviteCode) {
+    if (!email || !password) {
       setError("Completá todos los campos");
       return;
     }
@@ -20,16 +19,16 @@ export function LoginPage() {
     setError("");
     try {
       const res = await fetch(
-        "https://product-manager-production-e899.up.railway.app/api/auth/register",
+        "https://product-manager-production-e899.up.railway.app/api/auth/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password, inviteCode }),
+          body: JSON.stringify({ email, password }),
         },
       );
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Error al unirse al negocio");
+        setError(data.error || "Error al iniciar sesión");
         return;
       }
       localStorage.setItem("token", data.token);
@@ -64,12 +63,10 @@ export function LoginPage() {
             <input
               className="input-field"
               type="email"
-              placeholder="tu@email.com"
+              placeholder="tu@negocio.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSubmit();
-              }}
+              onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
             />
           </div>
         </div>
@@ -84,9 +81,7 @@ export function LoginPage() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSubmit();
-              }}
+              onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
             />
             <button
               className="auth-input-toggle"
@@ -103,19 +98,16 @@ export function LoginPage() {
           disabled={loading}
         >
           <ArrowRight size={18} />
-          {loading ? "Uniéndose..." : "Unirse al negocio"}
+          {loading ? "Entrando..." : "Entrar"}
         </button>
       </div>
 
       <div className="auth-footer">
         <p>
-          ¿Querés crear tu propio negocio?{" "}
-          <Link to="/register">Registrate</Link>
+          ¿No tenés cuenta? <Link to="/register">Registrate</Link>
         </p>
-        <p style={{ marginTop: 8 }}>
-          ¿Ya tenés cuenta? <Link to="/login">Iniciá sesión</Link>
-        </p>
+        <p style={{ marginTop: 8 }}>¿Olvidaste tu contraseña?</p>
       </div>
     </div>
   );
-}
+};
