@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Tag, Hash } from "lucide-react";
 
 export function JoinPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [inviteCode, setInviteCode] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -41,72 +43,90 @@ export function JoinPage() {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <div className="auth-logo">
-          <span className="auth-logo-icon">P</span>
-          <span className="auth-logo-text">Precify</span>
+    <div className="auth-page">
+      <div className="auth-logo">
+        <div className="auth-logo-icon">
+          <Tag size={22} />
         </div>
-        <h1 className="auth-title">Unirse a un negocio</h1>
-        <p className="auth-subtitle">
-          Ingresá el código que te compartió el admin
+        <span className="auth-logo-name">Precify</span>
+      </div>
+
+      <h1 className="auth-title">Unirse a un negocio</h1>
+      <p className="auth-subtitle">
+        Ingresá el código que te compartió el admin
+      </p>
+
+      <div className="auth-form">
+        {error && <div className="auth-error">{error}</div>}
+
+        <div className="form-group">
+          <label>Código de invitación</label>
+          <div className="auth-input-wrap">
+            <Hash size={16} className="auth-input-icon" />
+            <input
+              className="input-field"
+              type="text"
+              placeholder="ej. 5b07398e-333e-4512..."
+              value={inviteCode}
+              onChange={(e) => setInviteCode(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Email</label>
+          <div className="auth-input-wrap">
+            <Mail size={16} className="auth-input-icon" />
+            <input
+              className="input-field"
+              type="email"
+              placeholder="tu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
+            />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Contraseña</label>
+          <div className="auth-input-wrap">
+            <Lock size={16} className="auth-input-icon" />
+            <input
+              className="input-field"
+              type={showPassword ? "text" : "password"}
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
+            />
+            <button
+              className="auth-input-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
+        </div>
+
+        <button
+          className="auth-submit"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          <ArrowRight size={18} />
+          {loading ? "Uniéndose..." : "Unirse al negocio"}
+        </button>
+      </div>
+
+      <div className="auth-footer">
+        <p>
+          ¿Querés crear tu propio negocio?{" "}
+          <Link to="/register">Registrate</Link>
         </p>
-
-        <div className="auth-form">
-          <div className="form-group">
-            <label className="form-label">Código de invitación</label>
-            <div className="auth-input-wrap">
-              <input
-                className="input-field"
-                type="text"
-                placeholder="ej. 5b07398e-333e-4512..."
-                value={inviteCode}
-                onChange={(e) => setInviteCode(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Email</label>
-            <div className="auth-input-wrap">
-              <input
-                className="input-field"
-                type="email"
-                placeholder="tu@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Contraseña</label>
-            <div className="auth-input-wrap">
-              <input
-                className="input-field"
-                type="password"
-                placeholder="Mínimo 6 caracteres"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {error && <p className="auth-error">{error}</p>}
-
-          <button
-            className="btn-primary"
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            {loading ? "Uniéndose..." : "Unirse al negocio"}
-          </button>
-
-          <p className="auth-footer">
-            ¿Querés crear tu propio negocio?{" "}
-            <Link to="/register">Registrate</Link>
-          </p>
-        </div>
+        <p style={{ marginTop: 8 }}>
+          ¿Ya tenés cuenta? <Link to="/login">Iniciá sesión</Link>
+        </p>
       </div>
     </div>
   );
