@@ -52,26 +52,10 @@ export function LoginPage() {
       </div>
 
       <h1 className="auth-title">Bienvenido de vuelta</h1>
-      <p className="auth-subtitle">
-        Ingresá tus datos para continuar
-      </p>
+      <p className="auth-subtitle">Ingresá tus datos para continuar</p>
 
       <div className="auth-form">
         {error && <div className="auth-error">{error}</div>}
-
-        <div className="form-group">
-          <label>Código de invitación</label>
-          <div className="auth-input-wrap">
-            <Hash size={16} className="auth-input-icon" />
-            <input
-              className="input-field"
-              type="text"
-              placeholder="ej. 5b07398e-333e-4512..."
-              value={inviteCode}
-              onChange={(e) => setInviteCode(e.target.value)}
-            />
-          </div>
-        </div>
 
         <div className="form-group">
           <label>Email</label>
