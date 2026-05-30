@@ -8,6 +8,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { TeamPage } from "./pages/TeamPage.js";
+import { JoinPage } from "./pages/JoinPage.js";
 
 const isAuthenticated = (): boolean => {
   return !!localStorage.getItem("token");
@@ -69,6 +70,14 @@ createRoot(document.getElementById("root")!).render(
             <ProtectedRoute>
               <TeamPage />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/join"
+          element={
+            <PublicRoute>
+              <JoinPage />
+            </PublicRoute>
           }
         />
       </Routes>
