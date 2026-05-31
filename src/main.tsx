@@ -9,6 +9,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { TeamPage } from "./pages/TeamPage.js";
 import { JoinPage } from "./pages/JoinPage.js";
+import { initSyncListener } from "./services/syncService.js";
 
 const isAuthenticated = (): boolean => {
   return !!localStorage.getItem("token");
@@ -27,6 +28,8 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   }
   return <>{children}</>;
 };
+
+initSyncListener();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
