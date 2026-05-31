@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Settings, LogOut, X, Menu, Users } from "lucide-react";
+import { Settings, LogOut, X, Menu, Users, ArrowLeftRight } from "lucide-react";
 
 export function HamburgerMenu() {
   const [open, setOpen] = useState(false);
@@ -21,6 +21,11 @@ export function HamburgerMenu() {
   const handleTeam = () => {
     setOpen(false);
     navigate("/team");
+  };
+
+  const handleImportExport = () => {
+    setOpen(false);
+    navigate("/import-export");
   };
 
   return (
@@ -57,6 +62,10 @@ export function HamburgerMenu() {
               >
                 <LogOut size={20} />
                 <span>Cerrar sesión</span>
+              </button>
+              <button className="hamburger-item" onClick={handleImportExport}>
+                <ArrowLeftRight size={20} />
+                <span>Importar / Exportar</span>
               </button>
             </nav>
           </motion.div>

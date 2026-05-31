@@ -10,6 +10,7 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { TeamPage } from "./pages/TeamPage.js";
 import { JoinPage } from "./pages/JoinPage.js";
 import { initSyncListener } from "./services/syncService.js";
+import { ImportExportPage } from "./pages/ImportExportPage.js";
 
 const isAuthenticated = (): boolean => {
   return !!localStorage.getItem("token");
@@ -81,6 +82,14 @@ createRoot(document.getElementById("root")!).render(
             <PublicRoute>
               <JoinPage />
             </PublicRoute>
+          }
+        />
+        <Route
+          path="/import-export"
+          element={
+            <ProtectedRoute>
+              <ImportExportPage />
+            </ProtectedRoute>
           }
         />
       </Routes>

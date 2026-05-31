@@ -1282,3 +1282,75 @@ body {
   color: #e53e3e;
   cursor: pointer;
 }
+
+/* ── Import / Export ── */
+.ie-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 2rem;
+}
+
+.ie-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.ie-section-hint {
+    font-size: 13px;
+    color: var(--color-text-soft);
+    line-height: 1.5;
+}
+
+.ie-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.ie-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    cursor: pointer;
+    flex: 1;
+    justify-content: center;
+}
+
+.ie-btn--primary {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: white;
+}
+
+.ie-btn:disabled {
+    opacity: 0.6;
+}
+
+.ie-result {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.ie-result-success {
+    font-size: 13px;
+    color: #38a169;
+    font-weight: 600;
+}
+
+.ie-result-error {
+    font-size: 13px;
+    color: #e53e3e;
+    font-weight: 600;
+}
