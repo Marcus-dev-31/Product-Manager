@@ -66,7 +66,9 @@ export const LoginPage = () => {
               placeholder="tu@negocio.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSubmit();
+              }}
             />
           </div>
         </div>
@@ -81,7 +83,9 @@ export const LoginPage = () => {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSubmit();
+              }}
             />
             <button
               className="auth-input-toggle"
@@ -106,7 +110,10 @@ export const LoginPage = () => {
         <p>
           ¿No tenés cuenta? <Link to="/register">Registrate</Link>
         </p>
-        <p style={{ marginTop: 8 }}>¿Olvidaste tu contraseña?</p>
+        <p className="auth-footer-spacing">
+          ¿Olvidaste tu contraseña?{" "}
+          <Link to="/forgot-password">Recuperala acá</Link>
+        </p>
       </div>
     </div>
   );

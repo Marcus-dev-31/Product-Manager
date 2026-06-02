@@ -6,6 +6,17 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+enum TokenType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
 model Business {
   id         String    @id @default(uuid())
   name       String
@@ -16,19 +27,15 @@ model Business {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  email      String   @unique
-  password   String
-  role       Role     @default(EDITOR)
-  business   Business @relation(fields: [businessId], references: [id])
-  businessId String
-  createdAt  DateTime @default(now())
-}
-
-enum Role {
-  ADMIN
-  EDITOR
-  VIEWER
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  role          Role      @default(EDITOR)
+  emailVerified Boolean   @default(false)
+  business      Business  @relation(fields: [businessId], references: [id])
+  businessId    String
+  tokens        Token[]
+  createdAt     DateTime  @default(now())
 }
 
 model Product {
@@ -40,4 +47,15 @@ model Product {
   businessId String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+model Token {
+  id        String    @id @default(uuid())
+  token     String    @unique
+  type      TokenType
+  expiresAt DateTime
+  usedAt    DateTime?
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime  @default(now())
 }

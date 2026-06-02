@@ -11,6 +11,9 @@ import { TeamPage } from "./pages/TeamPage.js";
 import { JoinPage } from "./pages/JoinPage.js";
 import { initSyncListener } from "./services/syncService.js";
 import { ImportExportPage } from "./pages/ImportExportPage.js";
+import { ForgotPasswordPage } from "./pages/ForgotPasswordPage.js";
+import { ResetPasswordPage } from "./pages/ResetPasswordPage.js";
+import { VerifyEmailPage } from "./pages/VerifyEmailPage.js";
 
 const isAuthenticated = (): boolean => {
   return !!localStorage.getItem("token");
@@ -92,6 +95,23 @@ createRoot(document.getElementById("root")!).render(
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/forgot-password"
+          element={
+            <PublicRoute>
+              <ForgotPasswordPage />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            <PublicRoute>
+              <ResetPasswordPage />
+            </PublicRoute>
+          }
+        />
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
