@@ -27,6 +27,20 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const AdminRoute = ({ children }: { children: React.ReactNode }) => {
+  const token = localStorage.getItem("token");
+  if (!token) return <Navigate to="/login" replace />;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    if (payload.role !== "ADMIN") return <Navigate to="/" replace />;
+  } catch {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+};
+
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   if (isAuthenticated()) {
     return <Navigate to="/" replace />;
@@ -75,9 +89,9 @@ createRoot(document.getElementById("root")!).render(
         <Route
           path="/team"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <TeamPage />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
         <Route
