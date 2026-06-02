@@ -66,10 +66,21 @@ export async function updateProduct(
       return;
     }
 
+    // Si el precio cambió, se guarda el precio anterior en el historial
+    if (data.price !== undefined && data.price !== product.price) {
+      await prisma.priceHistory.create({
+        data: {
+          price: product.price,
+          productId: product.id,
+        },
+      });
+    }
+
     const updated = await prisma.product.update({
       where: { id: req.params.id as string },
       data,
     });
+
     res.json(updated);
   } catch (error) {
     if (error instanceof ZodError) {
@@ -104,4 +115,28 @@ export async function deleteProduct(
   } catch {
     res.status(500).json({ error: "Error del servidor" });
   }
+}
+
+export async function getProductHistory(
+  req: AuthRequest,
+  res: Response,
+): Promise<void> {
+  const product = await prisma.product.findFirst({
+    where: {
+      id: req.params.id as string,
+      businessId: req.user!.businessId,
+    },
+  });
+
+  if (!product) {
+    res.status(404).json({ error: "Producto no encontrado" });
+    return;
+  }
+
+  const history = await prisma.priceHistory.findMany({
+    where: { productId: product.id },
+    orderBy: { createdAt: "asc" },
+  });
+
+  res.json(history);
 }

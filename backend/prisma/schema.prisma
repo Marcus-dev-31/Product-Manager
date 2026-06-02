@@ -27,26 +27,35 @@ model Business {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
+  id            String   @id @default(uuid())
+  email         String   @unique
   password      String
-  role          Role      @default(EDITOR)
-  emailVerified Boolean   @default(false)
-  business      Business  @relation(fields: [businessId], references: [id])
+  role          Role     @default(EDITOR)
+  emailVerified Boolean  @default(false)
+  business      Business @relation(fields: [businessId], references: [id])
   businessId    String
   tokens        Token[]
-  createdAt     DateTime  @default(now())
+  createdAt     DateTime @default(now())
 }
 
 model Product {
-  id         String   @id @default(uuid())
-  name       String
-  price      Float
-  unitPrice  Float?
-  business   Business @relation(fields: [businessId], references: [id])
-  businessId String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id             String         @id @default(uuid())
+  name           String
+  price          Float
+  unitPrice      Float?
+  business       Business       @relation(fields: [businessId], references: [id])
+  businessId     String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  priceHistories PriceHistory[]
+}
+
+model PriceHistory {
+  id        String   @id @default(uuid())
+  price     Float
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  createdAt DateTime @default(now())
 }
 
 model Token {
