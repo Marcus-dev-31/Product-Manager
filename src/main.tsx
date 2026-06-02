@@ -14,6 +14,7 @@ import { ImportExportPage } from "./pages/ImportExportPage.js";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage.js";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage.js";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage.js";
+import { ContactPage } from "./pages/ContactPage.js";
 
 const isAuthenticated = (): boolean => {
   return !!localStorage.getItem("token");
@@ -112,6 +113,14 @@ createRoot(document.getElementById("root")!).render(
           }
         />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
+        <Route
+          path="/contact"
+          element={
+            <ProtectedRoute>
+              <ContactPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

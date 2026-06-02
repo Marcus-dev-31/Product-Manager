@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.routes.js'
 import { businessRouter } from './routes/business.routes.js'
 import { teamRouter } from './routes/team.routes.js'
 import { emailRouter } from './routes/email.routes.js'
+import { contactRouter } from './routes/contact.routes.js'
 
 const app = express()
 const PORT = 3000
@@ -21,6 +22,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/business', businessRouter)
 app.use('/api/team', teamRouter)
 app.use('/api/email', emailRouter)
+app.use('/api/contact', contactRouter)
 
 app.get('/', (req, res) => {
     res.json({ message: 'API funcionando' })

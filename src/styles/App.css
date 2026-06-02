@@ -1375,3 +1375,34 @@ body {
   justify-content: center;
   text-decoration: none;
 }
+
+/* ── Contact ── */
+.contact-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.contact-textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+}
+
+.contact-success {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 1rem 0;
+}
+
+.contact-success-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.contact-success-text {
+    font-size: 14px;
+    color: var(--color-text-soft);
+}
