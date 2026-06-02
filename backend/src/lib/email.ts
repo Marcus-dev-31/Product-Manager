@@ -9,7 +9,7 @@ export const sendVerificationEmail = async (
   const url = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
 
   await resend.emails.send({
-    from: "Precify <onboarding@resend.dev>",
+    from: 'Precify <noreply@marcusveliz.dev>',
     to: email,
     subject: "Verificá tu email — Precify",
     html: `
@@ -32,7 +32,7 @@ export const sendPasswordResetEmail = async (
   const url = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
 
   await resend.emails.send({
-    from: "Precify <onboarding@resend.dev>",
+    from: 'Precify <noreply@marcusveliz.dev>',
     to: email,
     subject: "Recuperar contraseña — Precify",
     html: `
