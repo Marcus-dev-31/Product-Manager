@@ -1406,3 +1406,36 @@ body {
     font-size: 14px;
     color: var(--color-text-soft);
 }
+
+/* ── Price History Chart ── */
+.price-history-chart {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.price-history-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+}
+
+.price-history-loading {
+    font-size: 13px;
+    color: var(--color-text-soft);
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.price-history-empty {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 13px;
+    color: var(--color-text-soft);
+    text-align: center;
+    line-height: 1.6;
+}

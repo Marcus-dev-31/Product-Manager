@@ -4,6 +4,7 @@ import { Button } from "./Button";
 import { Product } from "../services/productService";
 import { relativeDate } from "../utils/date";
 import { formatARS } from "../utils/format";
+import { PriceHistoryChart } from "./PriceHistoryChart.js";
 
 interface ProductDetailModalProps {
   onClose: () => void;
@@ -38,8 +39,6 @@ export const ProductDetailModal = ({
 
   return (
     <>
-      
-
       <div className="detail-hero">
         <div className="modal-handle" />
         <div className="detail-blob" aria-hidden />
@@ -83,6 +82,12 @@ export const ProductDetailModal = ({
                 <Clock size={13} /> editado {relativeDate(product.updatedAt)}
               </span>
             </div>
+
+            <PriceHistoryChart
+              productId={product.id}
+              currentPrice={product.price}
+              currentDate={product.updatedAt}
+            />
           </>
         ) : (
           <>

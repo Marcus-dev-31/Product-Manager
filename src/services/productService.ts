@@ -31,6 +31,13 @@ export interface UpdateProductData {
   unitPrice?: number;
 }
 
+export interface PriceHistoryEntry {
+  id: string;
+  price: number;
+  productId: string;
+  createdAt: string;
+}
+
 function getAuthHeaders(): HeadersInit {
   const token = localStorage.getItem("token");
   return {
@@ -109,3 +116,11 @@ export const deleteProduct = async (id: string): Promise<void> => {
   });
   if (!res.ok) throw new Error("Error al eliminar producto");
 };
+
+export const getProductHistory = async (id: string): Promise<PriceHistoryEntry[]> => {
+    const res = await fetch(`${API_URL}/${id}/history`, {
+        headers: getAuthHeaders()
+    })
+    if (!res.ok) throw new Error('Error al obtener el historial')
+    return res.json()
+}
