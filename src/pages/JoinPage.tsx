@@ -34,6 +34,7 @@ export function JoinPage() {
       }
       localStorage.setItem("token", data.token);
       localStorage.setItem("businessName", data.businessName);
+      localStorage.setItem("role", data.role);
       navigate("/");
     } catch {
       setError("Error de conexión con el servidor");
