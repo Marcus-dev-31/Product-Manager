@@ -19,6 +19,23 @@ export function ContactPage() {
       setError("Completá todos los campos");
       return;
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("El email no tiene un formato válido");
+      return;
+    }
+
+    if (message.length < 10) {
+      setError("El mensaje debe tener al menos 10 caracteres");
+      return;
+    }
+
+    if (message.length > 1000) {
+      setError("El mensaje no puede superar los 1000 caracteres");
+      return;
+    }
+
     setLoading(true);
     setError("");
     try {
