@@ -4,7 +4,11 @@ import { z } from "zod";
 import { AuthRequest } from "../middleware/auth.middleware.js";
 
 const updateBusinessSchema = z.object({
-  name: z.string().min(1, "El nombre no puede estar vacío"),
+  name: z
+    .string()
+    .min(1, "El nombre no puede estar vacío")
+    .max(100, "El nombre no puede superar los 100 caracteres")
+    .trim(),
 });
 
 export const updateBusiness = async (
