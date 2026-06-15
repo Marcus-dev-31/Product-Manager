@@ -1,3 +1,5 @@
+import { apiFetch } from "../utils/http";
+
 const API_URL =
   "https://product-manager-production-e899.up.railway.app/api/team";
 
@@ -17,13 +19,13 @@ export interface TeamMember {
 }
 
 export const getTeam = async (): Promise<TeamMember[]> => {
-  const res = await fetch(API_URL, { headers: getAuthHeaders() });
+  const res = await apiFetch(API_URL, { headers: getAuthHeaders() });
   if (!res.ok) throw new Error("Error al obtener el equipo");
   return res.json();
 };
 
 export const getInviteCode = async (): Promise<{ inviteCode: string }> => {
-  const res = await fetch(`${API_URL}/invite-code`, {
+  const res = await apiFetch(`${API_URL}/invite-code`, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Error al obtener el código");
@@ -34,7 +36,7 @@ export const updateRole = async (
   id: string,
   role: "EDITOR" | "VIEWER",
 ): Promise<TeamMember> => {
-  const res = await fetch(`${API_URL}/${id}/role`, {
+  const res = await apiFetch(`${API_URL}/${id}/role`, {
     method: "PATCH",
     headers: getAuthHeaders(),
     body: JSON.stringify({ role }),
@@ -44,7 +46,7 @@ export const updateRole = async (
 };
 
 export const removeUser = async (id: string): Promise<void> => {
-  const res = await fetch(`${API_URL}/${id}`, {
+  const res = await apiFetch(`${API_URL}/${id}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
   });

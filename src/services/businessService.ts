@@ -1,3 +1,5 @@
+import { apiFetch } from "../utils/http"
+
 const API_URL = 'https://product-manager-production-e899.up.railway.app'
 
 function getAuthHeaders(): HeadersInit {
@@ -9,7 +11,7 @@ function getAuthHeaders(): HeadersInit {
 }
 
 export const updateBusiness = async (name: string): Promise<{ businessName: string }> => {
-    const res = await fetch(API_URL, {
+    const res = await apiFetch(API_URL, {
         method: 'PATCH',
         headers: getAuthHeaders(),
         body: JSON.stringify({ name })
