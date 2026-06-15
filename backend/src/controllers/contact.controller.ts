@@ -11,6 +11,14 @@ const contactSchema = z.object({
   message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres"),
 });
 
+const escapeHtml = (str: string) =>
+  str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
 export const sendContact = async (
   req: Request,
   res: Response,
@@ -24,6 +32,10 @@ export const sendContact = async (
 
   const { name, email, type, message } = parsed.data;
 
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safeMessage = escapeHtml(message);
+
   const typeLabel = {
     peticion: "Peticion",
     consulta: "Consulta",
@@ -34,17 +46,17 @@ export const sendContact = async (
     await resend.emails.send({
       from: "Precify <noreply@marcusveliz.dev>",
       to: "marcus.devprojects@gmail.com",
-      subject: `[Precify] ${typeLabel} de ${name}`,
+      subject: `[Precify] ${typeLabel} de ${safeName}`,
       html: `
-                <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-                    <h2 style="color: #E8590C;">Nuevo mensaje de Precify</h2>
-                    <p><strong>Tipo:</strong> ${typeLabel}</p>
-                    <p><strong>Nombre:</strong> ${name}</p>
-                    <p><strong>Email:</strong> ${email}</p>
-                    <p><strong>Mensaje:</strong></p>
-                    <p style="background: #f5f5f5; padding: 12px; border-radius: 8px;">${message}</p>
-                </div>
-            `,
+        <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+            <h2 style="color: #E8590C;">Nuevo mensaje de Precify</h2>
+            <p><strong>Tipo:</strong> ${typeLabel}</p>
+            <p><strong>Nombre:</strong> ${safeName}</p>
+            <p><strong>Email:</strong> ${safeEmail}</p>
+            <p><strong>Mensaje:</strong></p>
+            <p style="background: #f5f5f5; padding: 12px; border-radius: 8px;">${safeMessage}</p>
+        </div>
+      `,
     });
 
     res.json({ message: "Mensaje enviado correctamente" });
