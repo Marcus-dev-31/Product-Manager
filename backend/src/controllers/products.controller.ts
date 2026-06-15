@@ -66,19 +66,21 @@ export async function updateProduct(
       return;
     }
 
-    // Si el precio cambió, se guarda el precio anterior en el historial
-    if (data.price !== undefined && data.price !== product.price) {
-      await prisma.priceHistory.create({
-        data: {
-          price: product.price,
-          productId: product.id,
-        },
-      });
-    }
+    const updated = await prisma.$transaction(async (tx) => {
+      // Si el precio cambió, guardamos el precio anterior en el historial
+      if (data.price !== undefined && data.price !== product.price) {
+        await tx.priceHistory.create({
+          data: {
+            price: product.price,
+            productId: product.id,
+          },
+        });
+      }
 
-    const updated = await prisma.product.update({
-      where: { id: req.params.id as string },
-      data,
+      return tx.product.update({
+        where: { id: req.params.id as string },
+        data,
+      });
     });
 
     res.json(updated);
