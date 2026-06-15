@@ -52,7 +52,14 @@ export async function register(req: AuthRequest, res: Response): Promise<void> {
         { expiresIn: "7d" },
       );
 
-      res.status(201).json({ token, businessName: business.name, role: user.role });
+      res
+        .status(201)
+        .json({
+          token,
+          businessName: business.name,
+          role: user.role,
+          businessId: business.id,
+        });
       return;
     }
 
@@ -84,7 +91,12 @@ export async function register(req: AuthRequest, res: Response): Promise<void> {
       { expiresIn: "7d" },
     );
 
-    res.status(201).json({ token, businessName: business.name, role: user.role });
+    res.status(201).json({
+      token,
+      businessName: business.name,
+      role: user.role,
+      businessId: business.id,
+    });
   } catch (error) {
     if (error instanceof ZodError) {
       res.status(400).json({ error: error.issues });
@@ -121,7 +133,12 @@ export async function login(req: AuthRequest, res: Response): Promise<void> {
       { expiresIn: "7d" },
     );
 
-    res.status(200).json({ token, businessName: user.business.name, role: user.role });
+    res.status(200).json({
+      token,
+      businessName: user.business.name,
+      role: user.role,
+      businessId: user.businessId,
+    });
   } catch (error) {
     if (error instanceof ZodError) {
       res.status(400).json({ error: error.issues });

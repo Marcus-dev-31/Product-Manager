@@ -11,13 +11,21 @@ import { contactRouter } from "./routes/contact.routes.js";
 const app = express();
 const PORT = 3000;
 
+const allowedOrigins =
+  process.env.NODE_ENV === "production"
+    ? [
+        "https://precify-eta.vercel.app",
+        "https://productmanager.marcusveliz.dev",
+      ]
+    : [
+        "http://localhost:5173",
+        "https://precify-eta.vercel.app",
+        "https://productmanager.marcusveliz.dev",
+      ];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://precify-eta.vercel.app",
-      "https://productmanager.marcusveliz.dev",
-    ],
+    origin: allowedOrigins,
   }),
 );
 

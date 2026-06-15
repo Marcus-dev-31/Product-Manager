@@ -35,6 +35,7 @@ export function JoinPage() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("businessName", data.businessName);
       localStorage.setItem("role", data.role);
+      localStorage.setItem("businessId", data.businessId);
       navigate("/");
     } catch {
       setError("Error de conexión con el servidor");
@@ -84,7 +85,9 @@ export function JoinPage() {
               placeholder="tu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSubmit();
+              }}
             />
           </div>
         </div>
@@ -99,7 +102,9 @@ export function JoinPage() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(); }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSubmit();
+              }}
             />
             <button
               className="auth-input-toggle"
