@@ -6,6 +6,7 @@ import {
   enqueueOperation,
   createOptimisticProduct,
 } from "./offlineProductService.js";
+import { apiFetch } from "../utils/http.js";
 
 const API_URL =
   "https://product-manager-production-e899.up.railway.app/api/products";
@@ -50,7 +51,7 @@ export const getProducts = async (): Promise<Product[]> => {
   if (!navigator.onLine) {
     return getCachedProducts();
   }
-  const res = await fetch(API_URL, {
+  const res = await apiFetch(API_URL, {
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Error al obtener productos");
@@ -69,7 +70,7 @@ export const createProduct = async (
     await enqueueOperation("create", { ...data });
     return optimistic;
   }
-  const res = await fetch(API_URL, {
+  const res = await apiFetch(API_URL, {
     method: "POST",
     headers: getAuthHeaders(),
     body: JSON.stringify(data),
@@ -95,7 +96,7 @@ export const updateProduct = async (
     await enqueueOperation("update", { id, ...data });
     return updated;
   }
-  const res = await fetch(`${API_URL}/${id}`, {
+  const res = await apiFetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: getAuthHeaders(),
     body: JSON.stringify(data),
@@ -110,7 +111,7 @@ export const deleteProduct = async (id: string): Promise<void> => {
     await enqueueOperation("delete", { id });
     return;
   }
-  const res = await fetch(`${API_URL}/${id}`, {
+  const res = await apiFetch(`${API_URL}/${id}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
   });
@@ -118,7 +119,7 @@ export const deleteProduct = async (id: string): Promise<void> => {
 };
 
 export const getProductHistory = async (id: string): Promise<PriceHistoryEntry[]> => {
-    const res = await fetch(`${API_URL}/${id}/history`, {
+    const res = await apiFetch(`${API_URL}/${id}/history`, {
         headers: getAuthHeaders()
     })
     if (!res.ok) throw new Error('Error al obtener el historial')
