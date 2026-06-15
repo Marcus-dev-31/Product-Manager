@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 import productsRouter from "./routes/products.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import { businessRouter } from "./routes/business.routes.js";
@@ -30,6 +31,16 @@ app.use(
 );
 
 app.use(express.json());
+
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hora
+  max: 5, // máximo 5 requests por IP por hora
+  message: {
+    error: "Demasiados mensajes enviados. Intentá de nuevo en 1 hora.",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 app.use("/api/products", productsRouter);
 app.use("/api/auth", authRoutes);
