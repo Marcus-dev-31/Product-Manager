@@ -32,19 +32,9 @@ app.use(
 
 app.use(express.json());
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 10, // máximo 10 intentos por IP
-  message: {
-    error: "Demasiados intentos. Esperá 15 minutos antes de intentar de nuevo.",
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
 const contactLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hora
-  max: 5, // máximo 5 mensajes por IP por hora
+  max: 5, // máximo 5 requests por IP por hora
   message: {
     error: "Demasiados mensajes enviados. Intentá de nuevo en 1 hora.",
   },

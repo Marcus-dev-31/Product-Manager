@@ -29,14 +29,10 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+  
   if (!token) return <Navigate to="/login" replace />;
-
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    if (payload.role !== "ADMIN") return <Navigate to="/" replace />;
-  } catch {
-    return <Navigate to="/login" replace />;
-  }
+  if (role !== "ADMIN") return <Navigate to="/" replace />;
 
   return <>{children}</>;
 };
