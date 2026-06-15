@@ -33,6 +33,8 @@ export const LoginPage = () => {
       }
       localStorage.setItem("token", data.token);
       localStorage.setItem("businessName", data.businessName);
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("businessId", data.businessId);
       navigate("/");
     } catch {
       setError("Error de conexión con el servidor");
