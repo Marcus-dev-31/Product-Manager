@@ -43,11 +43,11 @@ const contactLimiter = rateLimit({
 });
 
 app.use("/api/products", productsRouter);
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/business", businessRouter);
 app.use("/api/team", teamRouter);
-app.use("/api/email", emailRouter);
-app.use("/api/contact", contactRouter);
+app.use("/api/email", authLimiter, emailRouter);
+app.use("/api/contact", contactLimiter, contactRouter);
 
 app.get("/", (req, res) => {
   res.json({ message: "API funcionando" });
