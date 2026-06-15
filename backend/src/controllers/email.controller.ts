@@ -83,9 +83,8 @@ export const verifyEmail = async (
     return;
   }
 
-  await prisma.token.update({
+  await prisma.token.delete({
     where: { token },
-    data: { usedAt: new Date() },
   });
 
   await prisma.user.update({
@@ -165,9 +164,8 @@ export const resetPassword = async (
 
   const hashedPassword = await bcrypt.hash(parsed.data.password, 10);
 
-  await prisma.token.update({
+  await prisma.token.delete({
     where: { token: parsed.data.token },
-    data: { usedAt: new Date() },
   });
 
   await prisma.user.update({
