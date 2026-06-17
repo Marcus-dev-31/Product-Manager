@@ -19,14 +19,11 @@ export const LoginPage = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(
-        API_URL,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        },
-      );
+      const res = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "Error al iniciar sesión");
