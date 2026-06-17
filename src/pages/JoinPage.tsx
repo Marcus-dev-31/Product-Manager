@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Tag, Hash } from "lucide-react";
+import { API_URL } from "../config.js";
 
 export function JoinPage() {
   const navigate = useNavigate();
@@ -19,14 +20,11 @@ export function JoinPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(
-        "https://product-manager-production-e899.up.railway.app/api/auth/register",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password, inviteCode }),
-        },
-      );
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, inviteCode }),
+      });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "Error al unirse al negocio");

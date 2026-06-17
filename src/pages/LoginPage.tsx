@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Tag } from "lucide-react";
+import { API_URL } from "../config.js";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export const LoginPage = () => {
     setError("");
     try {
       const res = await fetch(
-        "https://product-manager-production-e899.up.railway.app/api/auth/login",
+        API_URL,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

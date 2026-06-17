@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Tag } from "lucide-react";
+import { API_URL } from "../config.js";
 
 export function VerifyEmailPage() {
   const [searchParams] = useSearchParams();
@@ -19,9 +20,7 @@ export function VerifyEmailPage() {
 
     const verify = async () => {
       try {
-        const res = await fetch(
-          `https://product-manager-production-e899.up.railway.app/api/email/verify?token=${token}`,
-        );
+        const res = await fetch(`${API_URL}/api/email/verify?token=${token}`);
         const data = await res.json();
         if (res.ok) {
           setStatus("success");

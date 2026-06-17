@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Lock, Eye, EyeOff, ArrowRight, Tag } from "lucide-react";
+import { API_URL } from "../config.js";
 
 export function ResetPasswordPage() {
   const navigate = useNavigate();
@@ -32,14 +33,11 @@ export function ResetPasswordPage() {
     setError("");
 
     try {
-      const res = await fetch(
-        "https://product-manager-production-e899.up.railway.app/api/email/reset-password",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token, password }),
-        },
-      );
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, password }),
+      });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "Error al restablecer la contraseña");
