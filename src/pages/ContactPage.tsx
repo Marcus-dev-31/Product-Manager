@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { API_URL } from "../config.js";
 
 export function ContactPage() {
   const navigate = useNavigate();
@@ -22,14 +23,11 @@ export function ContactPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(
-        "https://product-manager-production-e899.up.railway.app/api/contact",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, type, message }),
-        },
-      );
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, type, message }),
+      });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "Error al enviar el mensaje");

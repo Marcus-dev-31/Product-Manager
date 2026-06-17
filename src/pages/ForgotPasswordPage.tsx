@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Mail, ArrowRight, Tag } from "lucide-react";
+import { API_URL } from "../config.js";
 
 export function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -16,14 +17,11 @@ export function ForgotPasswordPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(
-        "https://product-manager-production-e899.up.railway.app/api/email/forgot-password",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        },
-      );
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
       if (res.ok) setSent(true);
     } catch {
       setError("Error de conexión con el servidor");

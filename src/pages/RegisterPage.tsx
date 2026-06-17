@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Building2, ArrowLeft, Sparkles } from "lucide-react";
+import { API_URL } from "../config.js";
 
 const BRAND_COLORS = ["#E8590C", "#3B82F6", "#8B5CF6", "#10B981", "#EC4899"];
 
@@ -27,14 +28,11 @@ export const RegisterPage = () => {
     setError("");
 
     try {
-      const res = await fetch(
-        "https://product-manager-production-e899.up.railway.app/api/auth/register",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ businessName, email, password }),
-        },
-      );
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ businessName, email, password }),
+      });
 
       const data = await res.json();
 

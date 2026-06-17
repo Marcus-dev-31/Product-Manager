@@ -1,7 +1,5 @@
 import { apiFetch } from "../utils/http";
-
-const API_URL =
-  "https://product-manager-production-e899.up.railway.app/api/team";
+import { API_URL } from "../config.js";
 
 function getAuthHeaders(): HeadersInit {
   const token = localStorage.getItem("token");

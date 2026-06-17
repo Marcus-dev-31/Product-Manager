@@ -7,9 +7,7 @@ import {
   createOptimisticProduct,
 } from "./offlineProductService.js";
 import { apiFetch } from "../utils/http.js";
-
-const API_URL =
-  "https://product-manager-production-e899.up.railway.app/api/products";
+import { API_URL } from "../config.js";
 
 export interface Product {
   id: string;
