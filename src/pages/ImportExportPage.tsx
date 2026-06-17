@@ -6,7 +6,7 @@ import {
   exportToCSV,
   parseImportFile,
   ProductRow,
-} from "../utils/excel.ts";
+} from "../utils/excel.js";
 import { createProduct, getProducts } from "../services/productService.js";
 
 export function ImportExportPage() {
@@ -20,13 +20,21 @@ export function ImportExportPage() {
   const [error, setError] = useState("");
 
   const handleExportExcel = async () => {
-    const products = await getProducts();
-    exportToExcel(products);
+    try {
+      const products = await getProducts();
+      exportToExcel(products);
+    } catch (e) {
+      if (e instanceof Error) setError(e.message);
+    }
   };
 
   const handleExportCSV = async () => {
-    const products = await getProducts();
-    exportToCSV(products);
+    try {
+      const products = await getProducts();
+      exportToCSV(products);
+    } catch (e) {
+      if (e instanceof Error) setError(e.message);
+    }
   };
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +47,12 @@ export function ImportExportPage() {
 
     try {
       const rows: ProductRow[] = await parseImportFile(file);
+
+      if (rows.length === 0) {
+        setError("El archivo no tiene filas válidas. Verificá el formato.");
+        return;
+      }
+
       let success = 0;
       let errors = 0;
 
@@ -58,10 +72,14 @@ export function ImportExportPage() {
       }
 
       setImportResult({ success, errors });
-    } catch {
-      setError(
-        "No se pudo leer el archivo. Verificá que sea un .xlsx o .csv válido.",
-      );
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError(
+          "No se pudo leer el archivo. Verificá que sea un .xlsx o .csv válido.",
+        );
+      }
     } finally {
       setImporting(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
