@@ -9,6 +9,9 @@ export interface ProductRow {
 export const exportToExcel = (
   products: { name: string; price: number; unitPrice?: number }[],
 ) => {
+  if (products.length === 0) {
+    throw new Error("No hay productos para exportar");
+  }
   const rows = products.map((p) => ({
     nombre: p.name,
     precio: p.price,
@@ -24,6 +27,9 @@ export const exportToExcel = (
 export const exportToCSV = (
   products: { name: string; price: number; unitPrice?: number }[],
 ) => {
+  if (products.length === 0) {
+    throw new Error("No hay productos para exportar");
+  }
   const rows = products.map((p) => ({
     nombre: p.name,
     precio: p.price,

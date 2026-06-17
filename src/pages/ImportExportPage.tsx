@@ -20,13 +20,21 @@ export function ImportExportPage() {
   const [error, setError] = useState("");
 
   const handleExportExcel = async () => {
-    const products = await getProducts();
-    exportToExcel(products);
+    try {
+      const products = await getProducts();
+      exportToExcel(products);
+    } catch (e) {
+      if (e instanceof Error) setError(e.message);
+    }
   };
 
   const handleExportCSV = async () => {
-    const products = await getProducts();
-    exportToCSV(products);
+    try {
+      const products = await getProducts();
+      exportToCSV(products);
+    } catch (e) {
+      if (e instanceof Error) setError(e.message);
+    }
   };
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
