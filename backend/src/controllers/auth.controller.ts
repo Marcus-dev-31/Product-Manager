@@ -11,6 +11,15 @@ import {
 import { AuthRequest } from "../middleware/auth.middleware.js";
 import { ZodError } from "zod";
 
+const setAuthCookie = (res: Response, token: string) => {
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días, igual que expiresIn del JWT
+  });
+};
+
 export async function register(req: AuthRequest, res: Response): Promise<void> {
   try {
     const data: RegisterInput = registerSchema.parse(req.body);
@@ -52,14 +61,13 @@ export async function register(req: AuthRequest, res: Response): Promise<void> {
         { expiresIn: "7d" },
       );
 
-      res
-        .status(201)
-        .json({
-          token,
-          businessName: business.name,
-          role: user.role,
-          businessId: business.id,
-        });
+      setAuthCookie(res, token);
+
+      res.status(201).json({
+        businessName: business.name,
+        role: user.role,
+        businessId: business.id,
+      });
       return;
     }
 
@@ -91,8 +99,9 @@ export async function register(req: AuthRequest, res: Response): Promise<void> {
       { expiresIn: "7d" },
     );
 
+    setAuthCookie(res, token);
+
     res.status(201).json({
-      token,
       businessName: business.name,
       role: user.role,
       businessId: business.id,
@@ -133,8 +142,9 @@ export async function login(req: AuthRequest, res: Response): Promise<void> {
       { expiresIn: "7d" },
     );
 
+    setAuthCookie(res, token);
+
     res.status(200).json({
-      token,
       businessName: user.business.name,
       role: user.role,
       businessId: user.businessId,
@@ -146,4 +156,31 @@ export async function login(req: AuthRequest, res: Response): Promise<void> {
     }
     res.status(500).json({ error: "Error del servidor" });
   }
+}
+
+export async function logout(req: AuthRequest, res: Response): Promise<void> {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  });
+  res.json({ message: "Sesión cerrada correctamente" });
+}
+
+export async function getMe(req: AuthRequest, res: Response): Promise<void> {
+  const user = await prisma.user.findUnique({
+    where: { id: req.user!.userId },
+    include: { business: true },
+  });
+
+  if (!user) {
+    res.status(404).json({ error: "Usuario no encontrado" });
+    return;
+  }
+
+  res.json({
+    businessName: user.business.name,
+    role: user.role,
+    businessId: user.businessId,
+  });
 }
