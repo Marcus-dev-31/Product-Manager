@@ -22,6 +22,7 @@ export const LoginPage = () => {
       const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
@@ -29,7 +30,6 @@ export const LoginPage = () => {
         setError(data.error || "Error al iniciar sesión");
         return;
       }
-      localStorage.setItem("token", data.token);
       localStorage.setItem("businessName", data.businessName);
       localStorage.setItem("role", data.role);
       localStorage.setItem("businessId", data.businessId);

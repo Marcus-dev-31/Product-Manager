@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { API_URL } from "../config.js";
 import {
   Settings,
   LogOut,
@@ -15,9 +16,18 @@ export function HamburgerMenu() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    try {
+      await fetch(`${API_URL}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch {
+      // si falla el request igual lo deslogueo en el frontend
+    }
     localStorage.removeItem("businessName");
+    localStorage.removeItem("role");
+    localStorage.removeItem("businessId");
     window.location.href = "/login";
   };
 

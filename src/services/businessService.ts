@@ -1,20 +1,14 @@
-import { apiFetch } from "../utils/http";
+import { apiFetch } from "../utils/http.js";
 import { API_URL } from "../config.js";
 
-function getAuthHeaders(): HeadersInit {
-  const token = localStorage.getItem("token");
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
-}
+const BUSINESS_URL = `${API_URL}/api/business`;
 
 export const updateBusiness = async (
   name: string,
 ): Promise<{ businessName: string }> => {
-  const res = await apiFetch(API_URL, {
+  const res = await apiFetch(BUSINESS_URL, {
     method: "PATCH",
-    headers: getAuthHeaders(),
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name }),
   });
   if (!res.ok) throw new Error("Error al actualizar el negocio");

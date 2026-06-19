@@ -17,12 +17,23 @@ export function JoinPage() {
       setError("Completá todos los campos");
       return;
     }
+    if (
+      password.length < 8 ||
+      !/[A-Z]/.test(password) ||
+      !/[0-9]/.test(password)
+    ) {
+      setError(
+        "La contraseña debe tener al menos 8 caracteres, una mayúscula y un número",
+      );
+      return;
+    }
     setLoading(true);
     setError("");
     try {
       const res = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, password, inviteCode }),
       });
       const data = await res.json();
@@ -30,7 +41,6 @@ export function JoinPage() {
         setError(data.error || "Error al unirse al negocio");
         return;
       }
-      localStorage.setItem("token", data.token);
       localStorage.setItem("businessName", data.businessName);
       localStorage.setItem("role", data.role);
       localStorage.setItem("businessId", data.businessId);

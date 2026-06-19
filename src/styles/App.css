@@ -1378,64 +1378,73 @@ body {
 
 /* ── Contact ── */
 .contact-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
 }
 
 .contact-textarea {
-    resize: vertical;
-    min-height: 120px;
-    font-family: inherit;
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
 }
 
 .contact-success {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 1rem 0;
 }
 
 .contact-success-title {
-    font-size: 1.25rem;
-    font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .contact-success-text {
-    font-size: 14px;
-    color: var(--color-text-soft);
+  font-size: 14px;
+  color: var(--color-text-soft);
 }
 
 /* ── Price History Chart ── */
 .price-history-chart {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--color-border);
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
 }
 
 .price-history-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--color-text-soft);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
 }
 
 .price-history-loading {
-    font-size: 13px;
-    color: var(--color-text-soft);
-    text-align: center;
-    padding: 1rem 0;
+  font-size: 13px;
+  color: var(--color-text-soft);
+  text-align: center;
+  padding: 1rem 0;
 }
 
 .price-history-empty {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--color-border);
-    font-size: 13px;
-    color: var(--color-text-soft);
-    text-align: center;
-    line-height: 1.6;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 13px;
+  color: var(--color-text-soft);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.auth-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 14px;
+  color: var(--color-text-soft);
 }

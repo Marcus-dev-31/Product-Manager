@@ -15,32 +15,33 @@ import { ForgotPasswordPage } from "./pages/ForgotPasswordPage.js";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage.js";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage.js";
 import { ContactPage } from "./pages/ContactPage.js";
-
-const isAuthenticated = (): boolean => {
-  return !!localStorage.getItem("token");
-};
+import { AuthProvider, useAuth } from "./context/AuthContext.js";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  if (!isAuthenticated()) {
-    return <Navigate to="/login" replace />;
-  }
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) return <div className="auth-loading">Cargando...</div>;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+
   return <>{children}</>;
 };
 
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
-  
-  if (!token) return <Navigate to="/login" replace />;
+  const { isAuthenticated, role, loading } = useAuth();
+
+  if (loading) return <div className="auth-loading">Cargando...</div>;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (role !== "ADMIN") return <Navigate to="/" replace />;
 
   return <>{children}</>;
 };
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-  if (isAuthenticated()) {
-    return <Navigate to="/" replace />;
-  }
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) return <div className="auth-loading">Cargando...</div>;
+  if (isAuthenticated) return <Navigate to="/" replace />;
+
   return <>{children}</>;
 };
 
@@ -49,89 +50,91 @@ initSyncListener();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <LoginPage />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <RegisterPage />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <App />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <SettingsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/team"
-          element={
-            <AdminRoute>
-              <TeamPage />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/join"
-          element={
-            <PublicRoute>
-              <JoinPage />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/import-export"
-          element={
-            <ProtectedRoute>
-              <ImportExportPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/forgot-password"
-          element={
-            <PublicRoute>
-              <ForgotPasswordPage />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/reset-password"
-          element={
-            <PublicRoute>
-              <ResetPasswordPage />
-            </PublicRoute>
-          }
-        />
-        <Route path="/verify-email" element={<VerifyEmailPage />} />
-        <Route
-          path="/contact"
-          element={
-            <ProtectedRoute>
-              <ContactPage />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <RegisterPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <App />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/team"
+            element={
+              <AdminRoute>
+                <TeamPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/join"
+            element={
+              <PublicRoute>
+                <JoinPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/import-export"
+            element={
+              <ProtectedRoute>
+                <ImportExportPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <PublicRoute>
+                <ForgotPasswordPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <PublicRoute>
+                <ResetPasswordPage />
+              </PublicRoute>
+            }
+          />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
+          <Route
+            path="/contact"
+            element={
+              <ProtectedRoute>
+                <ContactPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 );

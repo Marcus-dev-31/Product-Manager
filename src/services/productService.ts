@@ -37,21 +37,13 @@ export interface PriceHistoryEntry {
   createdAt: string;
 }
 
-function getAuthHeaders(): HeadersInit {
-  const token = localStorage.getItem("token");
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
-}
+const PRODUCTS_URL = `${API_URL}/api/products`;
 
 export const getProducts = async (): Promise<Product[]> => {
   if (!navigator.onLine) {
     return getCachedProducts();
   }
-  const res = await apiFetch(API_URL, {
-    headers: getAuthHeaders(),
-  });
+  const res = await apiFetch(PRODUCTS_URL);
   if (!res.ok) throw new Error("Error al obtener productos");
   const products = await res.json();
   await cacheProducts(products);
@@ -68,9 +60,9 @@ export const createProduct = async (
     await enqueueOperation("create", { ...data });
     return optimistic;
   }
-  const res = await apiFetch(API_URL, {
+  const res = await apiFetch(PRODUCTS_URL, {
     method: "POST",
-    headers: getAuthHeaders(),
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error("Error al crear producto");
@@ -94,9 +86,9 @@ export const updateProduct = async (
     await enqueueOperation("update", { id, ...data });
     return updated;
   }
-  const res = await apiFetch(`${API_URL}/${id}`, {
+  const res = await apiFetch(`${PRODUCTS_URL}/${id}`, {
     method: "PUT",
-    headers: getAuthHeaders(),
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error("Error al actualizar producto");
@@ -109,17 +101,16 @@ export const deleteProduct = async (id: string): Promise<void> => {
     await enqueueOperation("delete", { id });
     return;
   }
-  const res = await apiFetch(`${API_URL}/${id}`, {
+  const res = await apiFetch(`${PRODUCTS_URL}/${id}`, {
     method: "DELETE",
-    headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Error al eliminar producto");
 };
 
-export const getProductHistory = async (id: string): Promise<PriceHistoryEntry[]> => {
-    const res = await apiFetch(`${API_URL}/${id}/history`, {
-        headers: getAuthHeaders()
-    })
-    if (!res.ok) throw new Error('Error al obtener el historial')
-    return res.json()
-}
+export const getProductHistory = async (
+  id: string,
+): Promise<PriceHistoryEntry[]> => {
+  const res = await apiFetch(`${PRODUCTS_URL}/${id}/history`);
+  if (!res.ok) throw new Error("Error al obtener el historial");
+  return res.json();
+};

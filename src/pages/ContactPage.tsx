@@ -23,7 +23,7 @@ export function ContactPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch(`${API_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, type, message }),

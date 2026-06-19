@@ -33,7 +33,7 @@ export function ResetPasswordPage() {
     setError("");
 
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch(`${API_URL}/api/email/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, password }),
