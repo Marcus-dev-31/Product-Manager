@@ -14,14 +14,7 @@ export function authenticate(
   res: Response,
   next: NextFunction,
 ) {
-  const authHeader = req.headers["authorization"];
-
-  if (!authHeader) {
-    res.status(401).json({ error: "Token requerido" });
-    return;
-  }
-
-  const token = authHeader.split(" ")[1];
+  const token = req.cookies?.token;
 
   if (!token) {
     res.status(401).json({ error: "Token requerido" });

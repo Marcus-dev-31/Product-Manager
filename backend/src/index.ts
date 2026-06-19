@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import productsRouter from "./routes/products.routes.js";
 import authRoutes from "./routes/auth.routes.js";
@@ -27,10 +28,12 @@ const allowedOrigins =
 app.use(
   cors({
     origin: allowedOrigins,
+    credentials: true,
   }),
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 const contactLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hora
