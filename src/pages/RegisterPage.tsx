@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Building2, ArrowLeft, Sparkles } from "lucide-react";
 import { API_URL } from "../config.js";
+import { useAuth } from "../context/AuthContext.js";
 
 const BRAND_COLORS = ["#E8590C", "#3B82F6", "#8B5CF6", "#10B981", "#EC4899"];
 
@@ -13,6 +14,8 @@ export const RegisterPage = () => {
   const [selectedColor, setSelectedColor] = useState<string>(BRAND_COLORS[0]);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+
+  const { refetch } = useAuth();
 
   const handleSubmit = async () => {
     if (!businessName || !email || !password) {
@@ -51,6 +54,7 @@ export const RegisterPage = () => {
       localStorage.setItem("businessName", data.businessName);
       localStorage.setItem("role", data.role);
       localStorage.setItem("businessId", data.businessId);
+      await refetch();
       navigate("/");
     } catch {
       setError("Error de conexión con el servidor");

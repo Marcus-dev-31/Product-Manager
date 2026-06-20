@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Tag } from "lucide-react";
 import { API_URL } from "../config.js";
+import { useAuth } from "../context/AuthContext.js";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { refetch } = useAuth();
 
   const handleSubmit = async () => {
     if (!email || !password) {
@@ -33,6 +36,7 @@ export const LoginPage = () => {
       localStorage.setItem("businessName", data.businessName);
       localStorage.setItem("role", data.role);
       localStorage.setItem("businessId", data.businessId);
+      await refetch();
       navigate("/");
     } catch {
       setError("Error de conexión con el servidor");
