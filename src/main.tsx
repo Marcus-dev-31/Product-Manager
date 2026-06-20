@@ -116,14 +116,7 @@ createRoot(document.getElementById("root")!).render(
               </PublicRoute>
             }
           />
-          <Route
-            path="/reset-password"
-            element={
-              <PublicRoute>
-                <ResetPasswordPage />
-              </PublicRoute>
-            }
-          />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
           <Route
             path="/contact"
