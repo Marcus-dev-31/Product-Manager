@@ -14,18 +14,21 @@ import crypto from "crypto";
 
 const setAuthCookie = (res: Response, token: string) => {
   const csrfToken = crypto.randomBytes(32).toString("hex");
+  const isProd = process.env.NODE_ENV === "production";
 
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: isProd,
+    sameSite: isProd ? "lax" : "lax",
+    domain: isProd ? ".marcusveliz.dev" : undefined,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
   res.cookie("csrfToken", csrfToken, {
-    httpOnly: false, // esta SÍ la lee JavaScript
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    httpOnly: false,
+    secure: isProd,
+    sameSite: isProd ? "lax" : "lax",
+    domain: isProd ? ".marcusveliz.dev" : undefined,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 };
@@ -169,15 +172,19 @@ export async function login(req: AuthRequest, res: Response): Promise<void> {
 }
 
 export async function logout(req: AuthRequest, res: Response): Promise<void> {
+  const isProd = process.env.NODE_ENV === "production";
+
   res.clearCookie("token", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: isProd,
+    sameSite: "lax",
+    domain: isProd ? ".marcusveliz.dev" : undefined,
   });
   res.clearCookie("csrfToken", {
     httpOnly: false,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: isProd,
+    sameSite: "lax",
+    domain: isProd ? ".marcusveliz.dev" : undefined,
   });
   res.json({ message: "Sesión cerrada correctamente" });
 }

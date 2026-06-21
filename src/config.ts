@@ -1,1 +1,1 @@
-export const API_URL = 'https://product-manager-production-e899.up.railway.app'
+export const API_URL = "https://api.marcusveliz.dev";
