@@ -11,6 +11,7 @@ import { emailRouter } from "./routes/email.routes.js";
 import { contactRouter } from "./routes/contact.routes.js";
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = 3000;
 
 const allowedOrigins =
