@@ -10,13 +10,23 @@ import {
 } from "../schemas/auth.schema.js";
 import { AuthRequest } from "../middleware/auth.middleware.js";
 import { ZodError } from "zod";
+import crypto from "crypto";
 
 const setAuthCookie = (res: Response, token: string) => {
+  const csrfToken = crypto.randomBytes(32).toString("hex");
+
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días, igual que expiresIn del JWT
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  res.cookie("csrfToken", csrfToken, {
+    httpOnly: false, // esta SÍ la lee JavaScript
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 };
 
@@ -161,6 +171,11 @@ export async function login(req: AuthRequest, res: Response): Promise<void> {
 export async function logout(req: AuthRequest, res: Response): Promise<void> {
   res.clearCookie("token", {
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  });
+  res.clearCookie("csrfToken", {
+    httpOnly: false,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   });

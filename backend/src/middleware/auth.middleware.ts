@@ -45,3 +45,26 @@ export function requireAdmin(
   }
   next();
 }
+
+export function verifyCsrf(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const mutatingMethods = ["POST", "PUT", "PATCH", "DELETE"];
+
+  if (!mutatingMethods.includes(req.method)) {
+    next();
+    return;
+  }
+
+  const csrfCookie = req.cookies?.csrfToken;
+  const csrfHeader = req.headers["x-csrf-token"];
+
+  if (!csrfCookie || !csrfHeader || csrfCookie !== csrfHeader) {
+    res.status(403).json({ error: "Token CSRF inválido" });
+    return;
+  }
+
+  next();
+}
