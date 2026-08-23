@@ -17,13 +17,13 @@ const PORT = 3000;
 const allowedOrigins =
   process.env.NODE_ENV === "production"
     ? [
+        "https://precify.marcusveliz.dev",
         "https://productmanager.marcusveliz.dev",
-        "https://product-manager-puce-three.vercel.app",
       ]
     : [
         "http://localhost:5173",
+        "https://precify.marcusveliz.dev",
         "https://productmanager.marcusveliz.dev",
-        "https://product-manager-puce-three.vercel.app",
       ];
 
 app.use(
