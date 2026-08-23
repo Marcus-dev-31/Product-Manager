@@ -70,7 +70,7 @@ export function TeamPage() {
         <p className="team-invite-label">Código de invitación</p>
         <p className="team-invite-hint">
           Compartí este código y el link{" "}
-          <strong>precify-eta.vercel.app/join</strong> con tu equipo
+          <strong>precify.marcusveliz.dev/join</strong> con tu equipo
         </p>
         <div className="team-invite-row">
           <span className="team-invite-code">{inviteCode}</span>
